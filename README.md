@@ -1,17 +1,20 @@
 # Layers Weather card for Home Assistant
 
-**What to wear for the weather**, on a wall screen by the front door: how many layers, which shoes, hat or not,
-umbrella or not, and what to take with you, for the morning, afternoon and evening. From 19:30 it shows tomorrow,
-so clothes can be laid out the evening before.
+[![HACS: custom repository](https://img.shields.io/badge/HACS-custom%20repository-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories/)
+[![Latest release](https://img.shields.io/github/v/release/eybox/layers-weather-card)](https://github.com/eybox/layers-weather-card/releases/latest)
 
-There are two views on the same card, with a switch at the top:
+**What to wear for the weather**, on your Home Assistant dashboard: how many layers, which shoes, hat or not,
+umbrella or not, and what to take with you, for the morning, the afternoon and the evening. Made for a wall
+screen by the front door. From 19:30 it shows tomorrow, so clothes can be laid out the evening before.
+
+One card, two views, with a switch at the top:
 
 - **Grown-ups** (the default): the day in a few words, the weather at a glance, the parts of the day, what to
   wear now and what to put in the bag.
 - **Kids**: one big weather word with a face, and big pictures of what to put on, for children who can't read yet.
 
-It is the Home Assistant version of [Layers Weather](https://weather.ecortex.eu), and it uses the same rules and
-words: English, German, French, Spanish and Bulgarian.
+It is the Home Assistant version of [Layers Weather](https://weather.ecortex.eu) and uses the same rules and words,
+in English, German, French, Spanish and Bulgarian.
 
 ![The card on a wall tablet: the grown-ups view](docs/wall-grown-ups.png)
 
@@ -19,63 +22,273 @@ words: English, German, French, Spanish and Bulgarian.
 |---|---|
 | ![The kids view](docs/wall-kids.png) | ![The kids view in a dark theme](docs/wall-kids-dark.png) |
 
+## Contents
+
+- [Before you start](#before-you-start)
+- [Install](#install): [with HACS](#option-a-with-hacs-recommended), [by hand](#option-b-by-hand-without-hacs),
+  [YAML-mode dashboards](#if-your-dashboards-are-in-yaml-mode)
+- [Add the card to a dashboard](#add-the-card-to-a-dashboard)
+- [Settings](#settings)
+- [Examples](#examples)
+- [On a wall tablet](#on-a-wall-tablet)
+- [Update](#update) · [Troubleshooting](#troubleshooting) · [Remove](#remove)
+- [Weather data and privacy](#weather-data-and-privacy)
+
+## Before you start
+
+You need:
+
+1. **Home Assistant 2024.8 or newer.** To check: **Settings → About**.
+2. **Your home's location set in Home Assistant.** The card uses it for the weather. To check:
+   **Settings → System → General**, and look at the map. (Or point the card at another place, see
+   [Settings](#settings).)
+3. **Internet on the screen that shows the card.** The card gets the forecast from
+   [Open-Meteo](https://open-meteo.com/) straight from that screen's browser, so a tablet on a guest or blocked
+   network must be able to reach `api.open-meteo.com`.
+4. **For the easy install: [HACS](https://hacs.xyz/)** (the Home Assistant Community Store). If you don't have it,
+   either [install HACS first](https://hacs.xyz/docs/use/) or use the [install by hand](#option-b-by-hand-without-hacs).
+
 ## Install
 
-### With HACS (recommended)
+### Option A: with HACS (recommended)
 
-1. In Home Assistant, open **HACS**.
-2. Open the menu (⋮, top right) → **Custom repositories**.
-3. Repository: `https://github.com/eybox/layers-weather-card`, type: **Dashboard**. Add it.
-4. Find **Layers Weather** in HACS, open it and **Download**.
-5. Reload the browser page when HACS asks.
+HACS installs the card, tells Home Assistant about it, and offers updates later.
 
-### By hand
+1. In Home Assistant, open **HACS** from the sidebar.
+2. Top right, open the menu **⋮** and choose **Custom repositories**.
+3. Fill in the form:
+   - **Repository:** `https://github.com/eybox/layers-weather-card`
+   - **Type** (or *Category*): **Dashboard**
+4. Press **Add**, then close the window.
+5. In the HACS search box, type **Layers Weather** and open it.
+6. Press **Download** (bottom right), then **Download** again to confirm.
+7. When HACS asks, **reload the page**. If it doesn't ask, reload anyway: press **Ctrl + F5** (Windows, Linux) or
+   **Cmd + Shift + R** (Mac). In the Home Assistant phone app, see [the card doesn't appear](#the-card-doesnt-appear-or-custom-element-doesnt-exist-layers-weather-card).
 
-1. Download `layers-weather-card.js` from the [latest release](https://github.com/eybox/layers-weather-card/releases/latest).
-2. Put it in your Home Assistant `config/www/` folder.
-3. **Settings → Dashboards → ⋮ → Resources → Add resource**: URL `/local/layers-weather-card.js`, type
-   **JavaScript module**.
+That's it. Go on to [Add the card to a dashboard](#add-the-card-to-a-dashboard).
 
-## Add it to a dashboard
+> **Using YAML-mode dashboards?** HACS can't register the card for you there. Do the extra step in
+> [If your dashboards are in YAML mode](#if-your-dashboards-are-in-yaml-mode).
 
-Edit a dashboard, **Add card**, and pick **Layers Weather**. Or in YAML:
+### Option B: by hand (without HACS)
+
+You'll put one file in Home Assistant's `www` folder, then tell Home Assistant to load it.
+
+**1. Download the card.** Open the [latest release](https://github.com/eybox/layers-weather-card/releases/latest)
+and download **`layers-weather-card.js`** (under *Assets*).
+
+**2. Put it in the `www` folder.** It goes in `config/www/`, the same folder as your `configuration.yaml` plus
+`/www`. Use whichever way you already edit Home Assistant's files:
+- the **File editor** or **Studio Code Server** add-on (**Settings → Add-ons**): open the `config` folder, create a
+  folder called `www` if there isn't one, and upload the file into it;
+- or the **Samba share** add-on: open the `config` share on your computer, same thing.
+
+The file should end up as `config/www/layers-weather-card.js`.
+
+> **Did you just create the `www` folder?** Restart Home Assistant once (**Settings → System → ⟳ Restart**, top
+> right). Home Assistant only notices a new `www` folder when it starts.
+
+**3. Tell Home Assistant to load it** (skip this if your dashboards are in YAML mode, see the next section):
+1. **Resources** are hidden until *Advanced mode* is on. Click your **user name** (bottom left), and switch on
+   **Advanced mode**.
+2. Go to **Settings → Dashboards**, open the menu **⋮** (top right) and choose **Resources**.
+3. Press **+ Add resource** (bottom right) and fill in:
+   - **URL:** `/local/layers-weather-card.js?v=0.1.1`
+   - **Resource type:** **JavaScript module**
+4. Press **Create**, then reload the page (**Ctrl + F5** / **Cmd + Shift + R**).
+
+The `?v=0.1.1` at the end is the version. When you update the card by hand later, change it to the new version
+number, so every screen loads the new file instead of an old saved copy.
+
+### If your dashboards are in YAML mode
+
+Most setups aren't. You are in YAML mode if your `configuration.yaml` has this:
+
+```yaml
+lovelace:
+  mode: yaml
+```
+
+In YAML mode, Home Assistant ignores the **Resources** page, so the card has to be listed in
+`configuration.yaml` instead:
+
+1. Open `configuration.yaml` (with the File editor or Studio Code Server add-on).
+2. Under `lovelace:`, add a `resources:` list with the card. Use the line that matches how you installed it:
+
+   ```yaml
+   lovelace:
+     mode: yaml
+     resources:
+       # Installed with HACS:
+       - url: /hacsfiles/layers-weather-card/layers-weather-card.js
+         type: module
+       # Or installed by hand (use this line instead of the one above):
+       # - url: /local/layers-weather-card.js?v=0.1.1
+       #   type: module
+   ```
+
+   If you already have a `resources:` list, add just the `- url: …` and `type: module` lines to it.
+3. Check the file: **Developer tools → YAML → Check configuration**. It should say *Configuration will not prevent
+   Home Assistant from starting*.
+4. Restart Home Assistant (**Settings → System → ⟳ Restart**), then reload the page.
+
+## Add the card to a dashboard
+
+**With the dashboard editor:**
+1. Open the dashboard, and top right press **✏️ Edit dashboard** (or **⋮ → Edit dashboard**).
+2. Press **+ Add card**, type **Layers Weather** in the search box, and pick it.
+3. The card shows your home's weather straight away. Change anything you like in the settings on the left
+   (see [Settings](#settings)), then press **Save**, then **Done**.
+
+**In YAML** (in the card's *Code editor*, or in your dashboard's YAML file), this is all it needs:
 
 ```yaml
 type: custom:layers-weather-card
 ```
 
-That's all it needs: it uses your home's location, and Home Assistant's language and units. Everything else is
-optional, and the card's visual editor has all of it:
+It uses your home's location, and Home Assistant's language and units.
+
+## Settings
+
+Everything is optional. The card's visual editor has all of these; in YAML, add the lines you want.
+
+| Setting | What it does | Values | Default |
+|---|---|---|---|
+| `entity` | Where the weather is for. | A `zone`, `person` or `device_tracker` with a position | `zone.home` |
+| `name` | The place's name at the top of the card. | Any text | Your home's name in Home Assistant |
+| `mode` | The view the card starts in. | `everyone` (grown-ups), `kids` | `everyone` |
+| `show_mode_switch` | Show the grown-ups / kids switch on the card. | `true`, `false` | `true` |
+| `language` | The card's language. | `en`, `de`, `fr`, `es`, `bg` | Home Assistant's language (English if it isn't one of these) |
+| `units` | °C and km/h, or °F and mph. | `metric`, `imperial` | Home Assistant's unit system |
+| `sensitivity` | How warm the advice is. | `cold` (dresses you warmer), `normal`, `hot` (lighter) | `normal` |
+| `style` | The clothes pictures. Kids see girl / boy. | `women`, `men` | Neutral pictures |
+| `eyes` | Eye colour: lighter eyes get sunglasses sooner. | `brown`, `hazel`, `green`, `blue` | `brown` |
+| `allergies` | Tissues on high-pollen days, and a mask sooner when the air is poor. | `true`, `false` | `false` |
+
+The switch remembers the last view on each screen, for each place: a wall tablet left on **Kids** stays on Kids,
+while your phone stays on **Grown-ups**.
+
+## Examples
+
+**The whole family, at home** (the simplest):
 
 ```yaml
 type: custom:layers-weather-card
-entity: zone.home          # where: a zone, person or device tracker with a position
-name: Home                 # the place's name on the card (default: your location's name)
-mode: everyone             # the view shown first: everyone (grown-ups) or kids
-show_mode_switch: true     # the grown-ups / kids switch on the card
-language: en               # en, de, fr, es or bg (default: Home Assistant's language)
-units: metric              # metric or imperial (default: Home Assistant's units)
-sensitivity: normal        # cold (dress warmer), normal or hot (dress lighter)
-style: women               # the clothes pictures: women or men (girl or boy in the kids view)
-eyes: brown                # brown, hazel, green or blue: lighter eyes get sunglasses sooner
-allergies: false           # tissues on high-pollen days, and a mask sooner when the air is poor
 ```
 
-The switch remembers the last view on each screen, for each place (each tablet or phone keeps its own).
+**A kids' wall tablet**, always in the kids view, with no switch to fiddle with:
+
+```yaml
+type: custom:layers-weather-card
+mode: kids
+show_mode_switch: false
+style: women   # girl pictures (use men for boy pictures)
+```
+
+**Someone who always feels the cold, in German:**
+
+```yaml
+type: custom:layers-weather-card
+sensitivity: cold
+language: de
+```
+
+**Wherever a person is** (their phone must report a location to Home Assistant):
+
+```yaml
+type: custom:layers-weather-card
+entity: person.anna
+name: Anna
+```
+
+**A holiday home or grandma's house:** first add a zone for it (**Settings → Areas, labels & zones → Zones →
++ Add zone**), then:
+
+```yaml
+type: custom:layers-weather-card
+entity: zone.grandma
+```
+
+## On a wall tablet
+
+- **A full-screen card:** make a new view for the tablet (**Edit dashboard → +** at the top), set its
+  **View type** to **Panel (single card)**, and put this card on it.
+- **Keep the screen on:** a kiosk browser such as *Fully Kiosk Browser* (Android), or the tablet's own settings,
+  can keep the screen awake and reload the page if it ever loses the connection.
+- **Leave it running:** the card gets a new forecast every 30 minutes and keeps the time at your place every
+  minute, so it can stay on for days. At 19:30 it turns to tomorrow by itself.
+
+## Update
+
+- **With HACS:** when there's a new version, HACS shows **Update** (also under **Settings → Updates**). Press it,
+  then reload the page (**Ctrl + F5** / **Cmd + Shift + R**) on each screen.
+- **By hand:** download the new `layers-weather-card.js`, replace the old file in `config/www/`, and change the
+  number at the end of the resource URL (for example `?v=0.1.1` to `?v=0.1.2`). In YAML mode, change it in
+  `configuration.yaml` and restart.
+
+## Troubleshooting
+
+### The card doesn't appear, or "Custom element doesn't exist: layers-weather-card"
+
+Home Assistant hasn't loaded the card's file.
+1. **Reload the page hard:** **Ctrl + F5** / **Cmd + Shift + R**. In the **Home Assistant phone app**, open the
+   app's settings → **Companion app** → **Debugging** (or *Troubleshooting*) → **Reset frontend cache**, then
+   pull down to reload.
+2. **Check the resource:** with *Advanced mode* on, **Settings → Dashboards → ⋮ → Resources** should list
+   `/hacsfiles/layers-weather-card/layers-weather-card.js` (HACS) or `/local/layers-weather-card.js?v=…` (by hand),
+   type *JavaScript module*. If it isn't there, add it (see [by hand, step 3](#option-b-by-hand-without-hacs)).
+3. **In YAML mode:** check the `resources:` lines in `configuration.yaml` (see
+   [YAML mode](#if-your-dashboards-are-in-yaml-mode)), and restart.
+4. **Installed by hand and just made the `www` folder?** Restart Home Assistant once.
+5. **Still nothing:** open `https://YOUR-HOME-ASSISTANT/local/layers-weather-card.js` (or `/hacsfiles/…`) in the
+   browser. If you get an error page, the file isn't where Home Assistant looks for it.
+
+### "Set a place…"
+
+The card can't find a position. Set your home's location in **Settings → System → General**, or give the card an
+`entity` that has one (a zone, or a person whose phone reports a location).
+
+### "Could not get the weather. Check your connection."
+
+The screen showing the card couldn't reach Open-Meteo. Check that this device is online and allowed to reach
+`api.open-meteo.com` (guest networks, ad blockers and firewalls sometimes block it). The card tries again by
+itself every few minutes.
+
+### The card is in the wrong language, or in °F / °C
+
+It follows Home Assistant's language (your profile) and unit system. To pick your own, set `language` and
+`units` (see [Settings](#settings)).
+
+### The visual editor is blank
+
+Close the editor, reload the page, and open it again. If it's still blank, press **Show code editor** and edit
+the settings in YAML (see [Settings](#settings)), and please [report it](https://github.com/eybox/layers-weather-card/issues).
+
+### Something else
+
+[Open an issue](https://github.com/eybox/layers-weather-card/issues) with your Home Assistant version, the card
+version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.1.1`), the
+device and browser showing it, and a screenshot.
+
+## Remove
+
+1. Remove the card from your dashboards (**Edit dashboard**, then the card's **⋮ → Delete**).
+2. **With HACS:** **HACS → Layers Weather → ⋮ → Remove**, then reload the page.
+3. **By hand:** delete the resource (**Settings → Dashboards → ⋮ → Resources**), or the lines in
+   `configuration.yaml` in YAML mode, and delete `config/www/layers-weather-card.js`.
 
 ## Weather data and privacy
 
 - The forecast comes from [Open-Meteo](https://open-meteo.com/) (CC BY 4.0). Its free API is for non-commercial
-  use, and the credit line on the card must stay.
-- The card asks Open-Meteo straight from your browser. It sends your home's position **rounded to about 1 km**,
-  never the exact spot, and nothing else. There is no account, no tracking, and nothing is stored anywhere except
-  the last view on each screen (in that browser).
-- It refreshes the forecast every 30 minutes, and the time at your place every minute.
+  use, and the credit line at the bottom of the card must stay.
+- The card asks Open-Meteo **straight from the browser** of the screen showing it. It sends only your home's
+  position, **rounded to about 1 km** (never the exact spot). There is no account and no tracking, and nothing is
+  sent to anyone else.
+- The only thing it keeps is the last view (grown-ups or kids) on each screen, in that browser.
+- Weather warnings (MeteoAlarm, the US National Weather Service) are in the [web app](https://weather.ecortex.eu),
+  not yet in the card.
 
-## Notes
+## License
 
-- Weather warnings (MeteoAlarm, the US National Weather Service) are in the web app, not yet in the card.
-- Found a problem? [Open an issue](https://github.com/eybox/layers-weather-card/issues).
-
-Copyright © 2026 eybox. All rights reserved. You may install and use the card with Home Assistant; please don't
-redistribute or modify it.
+Copyright © 2026 eybox. All rights reserved. You may install and use this card with your own Home Assistant;
+please don't redistribute or modify it.
