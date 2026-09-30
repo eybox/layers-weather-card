@@ -61,7 +61,7 @@ eyes: brown                # brown, hazel, green or blue: lighter eyes get sungl
 allergies: false           # tissues on high-pollen days, and a mask sooner when the air is poor
 ```
 
-The switch remembers the last view on each screen (each tablet or phone keeps its own).
+The switch remembers the last view on each screen, for each place (each tablet or phone keeps its own).
 
 ## Weather data and privacy
 

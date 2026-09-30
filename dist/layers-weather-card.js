@@ -533,7 +533,7 @@ function k(r, i) {
 				in: n.in.length
 			} : null
 		};
-	}), Se = (e) => {
+	}), Q = (e) => {
 		let t = X.findIndex((t) => t.outfit.part === e.part);
 		if (t <= 0 || X[t - 1].past) return null;
 		let n = X[t - 1].outfit, r = T(e), i = T(n);
@@ -542,8 +542,8 @@ function k(r, i) {
 			off: i.filter((e) => !r.includes(e)),
 			on: r.filter((e) => !i.includes(e))
 		};
-	}, Ce = v.map((t, n) => {
-		let [i, o] = e[t.part], s = Se(t), c = t.conditions.rainy && !t.conditions.snow ? ne(r, Math.max(a, i), o) : null, l = () => A([t], {
+	}, Se = v.map((t, n) => {
+		let [i, o] = e[t.part], s = Q(t), c = t.conditions.rainy && !t.conditions.snow ? ne(r, Math.max(a, i), o) : null, l = () => A([t], {
 			total: 1,
 			single: !0
 		}, c), u = l();
@@ -563,7 +563,7 @@ function k(r, i) {
 			change: s,
 			bag: Z[n]
 		};
-	}), we = v.map((e, t) => {
+	}), Ce = v.map((e, t) => {
 		let n = e.extras.filter((e) => e !== "poncho" && (!y.includes(e) || w.includes(e))), r = [
 			...e.legs,
 			...e.layers,
@@ -574,7 +574,7 @@ function k(r, i) {
 			...e.extras.includes("poncho") ? ["poncho"] : [],
 			...n
 		], i = e.conditions.rainy && !e.umbrella && !e.conditions.snow, a = i ? ["umbrella"] : [];
-		for (let n of Se(e)?.off ?? []) !a.includes(n) && !Z[t].in.includes(n) && a.push(n);
+		for (let n of Q(e)?.off ?? []) !a.includes(n) && !Z[t].in.includes(n) && a.push(n);
 		return {
 			part: e.part,
 			wear: r,
@@ -583,19 +583,19 @@ function k(r, i) {
 			storm: e.conditions.storm,
 			bag: Z[t]
 		};
-	}), Q = [
+	}), we = [
 		...U,
 		{
 			key: "speech.wear",
 			params: { items: {
 				kind: "items",
-				items: we[0].wear.filter((e) => e !== "umbrella" && e !== "socksEveryday")
+				items: Ce[0].wear.filter((e) => e !== "umbrella" && e !== "socksEveryday")
 			} }
 		},
 		...F[0].detail.slice(0, 1),
 		F.find((e) => e.id === "rain").title
 	];
-	return be.length > 0 && Q.push({
+	return be.length > 0 && we.push({
 		key: "speech.bring",
 		params: { items: {
 			kind: "items",
@@ -609,11 +609,11 @@ function k(r, i) {
 		chips: K,
 		strip: xe,
 		cards: F,
-		views: Ce,
-		kids: we,
+		views: Se,
+		kids: Ce,
 		numbers: se(r, a),
 		theme: g(B.conditions),
-		speech: Q
+		speech: we
 	};
 }
 function A(e, t, n) {
@@ -5222,10 +5222,51 @@ var J = {
 	logo: ({ face: e = !0 } = {}) => J.logo[e ? "face" : "plain"],
 	eye: (e) => J.eye[e],
 	part: (e) => J.part[e]
-}, X = "\n:host {\n  --lw-text: var(--primary-text-color, #1d1b20);\n  --lw-muted: var(--secondary-text-color, #5d5a62);\n  --lw-line: var(--divider-color, rgba(0, 0, 0, 0.12));\n  --lw-tile: var(--secondary-background-color, #f2f0f4);\n  --lw-accent: var(--primary-color, #6031b0);\n  --lw-on-accent: var(--text-primary-color, #ffffff);\n  display: block;\n}\n* { box-sizing: border-box; }\n.lw {\n  container-type: inline-size;\n  padding: 16px;\n  color: var(--lw-text);\n  display: grid;\n  gap: 14px;\n}\nsvg { display: block; width: 100%; height: 100%; }\nul, ol { list-style: none; margin: 0; padding: 0; }\nh2, h3, p { margin: 0; }\n.note { color: var(--lw-muted); font-size: 1rem; }\n\n.lw__top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }\n.lw__place { display: flex; align-items: center; gap: 10px; min-width: 0; }\n.lw__place b { display: block; font-size: 1.125rem; font-weight: 700; line-height: 1.2; }\n.lw__place small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__logo { width: 36px; height: 36px; flex: none; }\n\n.lw__switch { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--lw-tile); }\n.lw__switch button {\n  font: inherit; font-size: 0.875rem; font-weight: 600; border: 0; border-radius: 999px; padding: 6px 14px;\n  background: transparent; color: var(--lw-text); cursor: pointer;\n}\n.lw__switch button[aria-pressed='true'] { background: var(--lw-accent); color: var(--lw-on-accent); }\n.lw__switch button:focus-visible { outline: 2px solid var(--lw-accent); outline-offset: 2px; }\n\n.lw__main { display: grid; gap: 16px; }\n.lw__lead { display: grid; gap: 8px; align-content: start; }\n.lw__headline { font-size: 1.75rem; font-weight: 800; line-height: 1.12; letter-spacing: -0.01em; }\n.lw__summary { color: var(--lw-muted); font-size: 1rem; line-height: 1.4; }\n.lw__chips { display: flex; flex-wrap: wrap; gap: 6px; }\n.lw__chip {\n  display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;\n  background: var(--lw-tile); font-size: 0.875rem; font-weight: 600;\n}\n.lw__chip svg { width: 16px; height: 16px; }\n\n.lw__outfit { display: grid; gap: 10px; align-content: start; }\n.lw__strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }\n.lw__part {\n  display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--lw-tile);\n  font-size: 0.8125rem; text-align: center;\n}\n.lw__part svg { width: 34px; height: 34px; }\n.lw__part b { font-size: 0.875rem; }\n.lw__part small { color: var(--lw-muted); }\n.lw__part--past { opacity: 0.45; }\n.lw__part--on { box-shadow: inset 0 0 0 2px var(--lw-accent); }\n\n.lw__label {\n  display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;\n  text-transform: uppercase; color: var(--lw-muted);\n}\n.lw__label svg { width: 16px; height: 16px; }\n.lw__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 10px 6px; }\n.lw__tile { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: 0.8125rem; font-weight: 600; line-height: 1.2; }\n.lw__box { width: 64px; height: 64px; padding: 8px; border-radius: 16px; background: var(--lw-tile); }\n\n.lw__bag { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.9375rem; line-height: 1.35; }\n.lw__bag-icon { width: 20px; height: 20px; flex: none; color: var(--lw-muted); }\n.lw__bag > span:nth-child(2) { flex: 1 1 200px; }\n.lw__bag-items { display: flex; gap: 4px; }\n.lw__mini { width: 30px; height: 30px; }\n\n/* Kids: one big weather word with its face, and big pictures. */\n.lw__kids { display: grid; gap: 14px; }\n.lw__scene { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 20px; background: var(--lw-tile); }\n.lw__scene-art { position: relative; width: 96px; height: 96px; flex: none; }\n.lw__face { position: absolute; right: -8px; bottom: -8px; width: 46px; height: 46px; }\n.lw__word { display: block; font-size: 2.5rem; font-weight: 800; line-height: 1; }\n.lw__temp { display: block; font-size: 1.375rem; font-weight: 700; color: var(--lw-muted); }\n.lw__scene small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__tiles--kids { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; }\n.lw__tiles--kids .lw__tile { font-size: 1.0625rem; font-weight: 700; }\n.lw__tiles--kids .lw__box { width: 100px; height: 100px; padding: 12px; border-radius: 22px; }\n.lw__tiles--bag .lw__box { width: 72px; height: 72px; }\n\n.lw__credit { font-size: 0.75rem; color: var(--lw-muted); text-align: right; }\n\n/* Dark themes: the pictures keep their colours and get a soft light edge, as in the app. */\n.lw--dark .lw__box svg, .lw--dark .lw__mini svg, .lw--dark .lw__part svg, .lw--dark .lw__scene-art svg, .lw--dark .lw__logo svg {\n  filter: drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.9)) drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.6));\n}\n\n/* A wall tablet: headline left, outfit right; everything a size up. */\n@container (min-width: 640px) {\n  .lw { padding: 20px 24px; }\n  .lw__main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; }\n  .lw__headline { font-size: 2.25rem; }\n  .lw__box { width: 76px; height: 76px; }\n  .lw__tiles { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }\n  .lw__kids { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; }\n  .lw__kids .lw__label, .lw__tiles--bag { grid-column: 2; }\n  .lw__scene { flex-direction: column; align-items: flex-start; grid-row: span 3; }\n  .lw__scene-art { width: 140px; height: 140px; }\n  .lw__face { width: 64px; height: 64px; }\n  .lw__word { font-size: 3.25rem; }\n}\n@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }\n", Z = class extends HTMLElement {
-	config = {};
-	hassNow;
-	form;
+}, X = "\n:host {\n  --lw-text: var(--primary-text-color, #1d1b20);\n  --lw-muted: var(--secondary-text-color, #5d5a62);\n  --lw-line: var(--divider-color, rgba(0, 0, 0, 0.12));\n  --lw-tile: var(--secondary-background-color, #f2f0f4);\n  --lw-accent: var(--primary-color, #6031b0);\n  --lw-on-accent: var(--text-primary-color, #ffffff);\n  display: block;\n}\n* { box-sizing: border-box; }\n.lw {\n  container-type: inline-size;\n  padding: 16px;\n  color: var(--lw-text);\n  display: grid;\n  gap: 14px;\n}\nsvg { display: block; width: 100%; height: 100%; }\nul, ol { list-style: none; margin: 0; padding: 0; }\nh2, h3, p { margin: 0; }\n.note { color: var(--lw-muted); font-size: 1rem; }\n\n.lw__top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }\n.lw__place { display: flex; align-items: center; gap: 10px; min-width: 0; }\n.lw__place b { display: block; font-size: 1.125rem; font-weight: 700; line-height: 1.2; }\n.lw__place small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__logo { width: 36px; height: 36px; flex: none; }\n\n.lw__switch { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--lw-tile); }\n.lw__switch button {\n  font: inherit; font-size: 0.875rem; font-weight: 600; border: 0; border-radius: 999px; padding: 6px 14px;\n  background: transparent; color: var(--lw-text); cursor: pointer;\n}\n.lw__switch button[aria-pressed='true'] { background: var(--lw-accent); color: var(--lw-on-accent); }\n.lw__switch button:focus-visible { outline: 2px solid var(--lw-accent); outline-offset: 2px; }\n\n.lw__main { display: grid; gap: 16px; }\n.lw__lead { display: grid; gap: 8px; align-content: start; }\n.lw__headline { font-size: 1.75rem; font-weight: 800; line-height: 1.12; letter-spacing: -0.01em; }\n.lw__summary { color: var(--lw-muted); font-size: 1rem; line-height: 1.4; }\n.lw__chips { display: flex; flex-wrap: wrap; gap: 6px; }\n.lw__chip {\n  display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;\n  background: var(--lw-tile); font-size: 0.875rem; font-weight: 600;\n}\n.lw__chip svg { width: 16px; height: 16px; }\n\n.lw__outfit { display: grid; gap: 10px; align-content: start; }\n.lw__strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }\n.lw__part {\n  display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--lw-tile);\n  font-size: 0.8125rem; text-align: center;\n}\n.lw__part svg { width: 34px; height: 34px; }\n.lw__part b { font-size: 0.875rem; }\n.lw__part small { color: var(--lw-muted); }\n.lw__part--past { opacity: 0.45; }\n.lw__part--on { box-shadow: inset 0 0 0 2px var(--lw-accent); }\n\n.lw__label {\n  display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;\n  text-transform: uppercase; color: var(--lw-muted);\n}\n.lw__label svg { width: 16px; height: 16px; }\n.lw__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 10px 6px; }\n.lw__tile { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: 0.8125rem; font-weight: 600; line-height: 1.2; }\n.lw__box { width: 64px; height: 64px; padding: 8px; border-radius: 16px; background: var(--lw-tile); }\n\n.lw__bag { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.9375rem; line-height: 1.35; }\n.lw__bag-icon { width: 20px; height: 20px; flex: none; color: var(--lw-muted); }\n.lw__bag > span:nth-child(2) { flex: 1 1 200px; }\n.lw__bag-items { display: flex; gap: 4px; }\n.lw__mini { width: 30px; height: 30px; }\n\n/* Kids: one big weather word with its face, and big pictures. */\n.lw__kids { display: grid; gap: 14px; }\n.lw__scene { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 20px; background: var(--lw-tile); }\n.lw__scene-art { position: relative; width: 96px; height: 96px; flex: none; }\n.lw__face { position: absolute; right: -8px; bottom: -8px; width: 46px; height: 46px; }\n.lw__word { display: block; font-size: 2.5rem; font-weight: 800; line-height: 1; }\n.lw__temp { display: block; font-size: 1.375rem; font-weight: 700; color: var(--lw-muted); }\n.lw__scene small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__tiles--kids { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; }\n.lw__tiles--kids .lw__tile { font-size: 1.0625rem; font-weight: 700; }\n.lw__tiles--kids .lw__box { width: 100px; height: 100px; padding: 12px; border-radius: 22px; }\n.lw__tiles--bag .lw__box { width: 72px; height: 72px; }\n\n.lw__credit { font-size: 0.75rem; color: var(--lw-muted); text-align: right; }\n\n/* Dark themes: the pictures keep their colours and get a soft light edge, as in the app. */\n.lw--dark .lw__box svg, .lw--dark .lw__mini svg, .lw--dark .lw__part svg, .lw--dark .lw__scene-art svg, .lw--dark .lw__logo svg {\n  filter: drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.9)) drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.6));\n}\n\n/* A wall tablet: headline left, outfit right; everything a size up. */\n@container (min-width: 640px) {\n  .lw { padding: 20px 24px; }\n  .lw__main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; }\n  .lw__headline { font-size: 2.25rem; }\n  .lw__box { width: 76px; height: 76px; }\n  .lw__tiles { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }\n  .lw__kids { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; }\n  .lw__kids .lw__label, .lw__tiles--bag { grid-column: 2; }\n  .lw__scene { flex-direction: column; align-items: flex-start; grid-row: span 3; }\n  .lw__scene-art { width: 140px; height: 140px; }\n  .lw__face { width: 64px; height: 64px; }\n  .lw__word { font-size: 3.25rem; }\n}\n@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }\n";
+//#endregion
+//#region \0@oxc-project+runtime@0.151.0/helpers/esm/typeof.js
+function Z(e) {
+	"@babel/helpers - typeof";
+	return Z = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+		return typeof e;
+	} : function(e) {
+		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
+	}, Z(e);
+}
+//#endregion
+//#region \0@oxc-project+runtime@0.151.0/helpers/esm/toPrimitive.js
+function be(e, t) {
+	if (Z(e) != "object" || !e) return e;
+	var n = e[Symbol.toPrimitive];
+	if (n !== void 0) {
+		var r = n.call(e, t || "default");
+		if (Z(r) != "object") return r;
+		throw TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return (t === "string" ? String : Number)(e);
+}
+//#endregion
+//#region \0@oxc-project+runtime@0.151.0/helpers/esm/toPropertyKey.js
+function xe(e) {
+	var t = be(e, "string");
+	return Z(t) == "symbol" ? t : t + "";
+}
+//#endregion
+//#region \0@oxc-project+runtime@0.151.0/helpers/esm/defineProperty.js
+function Q(e, t, n) {
+	return (t = xe(t)) in e ? Object.defineProperty(e, t, {
+		value: n,
+		enumerable: !0,
+		configurable: !0,
+		writable: !0
+	}) : e[t] = n, e;
+}
+//#endregion
+//#region card/src/editor.ts
+var Se = class extends HTMLElement {
+	constructor(...e) {
+		super(...e), Q(this, "config", {}), Q(this, "hassNow", void 0), Q(this, "form", void 0);
+	}
 	setConfig(e) {
 		this.config = e, this.render();
 	}
@@ -5320,39 +5361,29 @@ var J = {
 		];
 	}
 };
-customElements.get("layers-weather-card-editor") || customElements.define("layers-weather-card-editor", Z);
+customElements.get("layers-weather-card-editor") || customElements.define("layers-weather-card-editor", Se);
 //#endregion
 //#region card/src/layers-weather-card.ts
-var be = "0.1.0", xe = [
+var Ce = "0.1.1", we = [
 	"en",
 	"de",
 	"fr",
 	"es",
 	"bg"
-], Se = 18e5, Ce = 3e5, we = "layers-weather-card:mode", Q = (e) => Math.round(e * 100) / 100, $ = (e) => e.replace(/[&<>"']/g, (e) => ({
+], Te = 18e5, Ee = 3e5, De = (e) => `layers-weather-card:mode:${e.entity ?? "zone.home"}`, Oe = (e) => Math.round(e * 100) / 100, $ = (e) => e.replace(/[&<>"']/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;",
 	"'": "&#39;"
-})[e]), Te = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), Ee = (e) => e.replace(/\s*\(.*\)\s*$/, ""), De = class extends HTMLElement {
-	config = { type: "custom:layers-weather-card" };
-	hassNow;
-	forecast;
-	fetchedFor = "";
-	fetchedAt = 0;
-	loading = !1;
-	failed = !1;
-	mode = "everyone";
-	timer;
-	root;
+})[e]), ke = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), Ae = (e) => e.replace(/\s*\(.*\)\s*$/, ""), je = class extends HTMLElement {
 	constructor() {
-		super(), this.root = this.attachShadow({ mode: "open" }), this.root.addEventListener("click", (e) => {
+		super(), Q(this, "config", { type: "custom:layers-weather-card" }), Q(this, "hassNow", void 0), Q(this, "forecast", void 0), Q(this, "fetchedFor", ""), Q(this, "fetchedAt", 0), Q(this, "loading", !1), Q(this, "failed", !1), Q(this, "mode", "everyone"), Q(this, "timer", void 0), Q(this, "drawn", ""), Q(this, "root", void 0), this.root = this.attachShadow({ mode: "open" }), this.root.addEventListener("click", (e) => {
 			let t = e.target.closest("[data-mode]");
 			if (t) {
 				this.mode = t.dataset.mode === "kids" ? "kids" : "everyone";
 				try {
-					localStorage.setItem(we, this.mode);
+					localStorage.setItem(De(this.config), this.mode);
 				} catch {}
 				this.render();
 			}
@@ -5363,14 +5394,14 @@ var be = "0.1.0", xe = [
 		this.config = e;
 		let t = null;
 		try {
-			t = e.show_mode_switch === !1 ? null : localStorage.getItem(we);
+			t = e.show_mode_switch === !1 ? null : localStorage.getItem(De(e));
 		} catch {
 			t = null;
 		}
 		this.mode = t === "kids" || t === "everyone" ? t : e.mode ?? "everyone", this.render();
 	}
 	set hass(e) {
-		this.hassNow = e, this.refresh(), this.render();
+		this.hassNow = e, this.refresh(), this.render(!1);
 	}
 	connectedCallback() {
 		this.timer = window.setInterval(() => {
@@ -5390,8 +5421,8 @@ var be = "0.1.0", xe = [
 			rows: "auto"
 		};
 	}
-	static getConfigElement() {
-		return document.createElement("layers-weather-card-editor");
+	static async getConfigElement() {
+		return await Re(), document.createElement("layers-weather-card-editor");
 	}
 	static getStubConfig() {
 		return { entity: "zone.home" };
@@ -5403,15 +5434,15 @@ var be = "0.1.0", xe = [
 		if (typeof n != "number" || typeof r != "number") return null;
 		let i = this.config.name ?? e.config?.location_name ?? (typeof t.friendly_name == "string" ? t.friendly_name : "");
 		return {
-			lat: Q(n),
-			lon: Q(r),
+			lat: Oe(n),
+			lon: Oe(r),
 			name: i
 		};
 	}
 	settings() {
 		let e = this.hassNow, t = (this.config.language ?? e?.locale?.language ?? e?.language ?? "en").slice(0, 2).toLowerCase();
 		return {
-			lang: xe.includes(t) ? t : "en",
+			lang: we.includes(t) ? t : "en",
 			units: this.config.units ?? (e?.config?.unit_system?.temperature === "°F" ? "imperial" : "metric"),
 			style: this.config.style === "women" ? "girl" : this.config.style === "men" ? "boy" : "neutral",
 			sensitivity: this.config.sensitivity ?? "normal",
@@ -5423,7 +5454,7 @@ var be = "0.1.0", xe = [
 		let e = this.place();
 		if (!e || this.loading) return;
 		let t = `${e.lat},${e.lon}`, n = Date.now() - this.fetchedAt;
-		t === this.fetchedFor && n < (this.failed ? Ce : Se) || (this.loading = !0, W(e.lat, e.lon).then((e) => {
+		t === this.fetchedFor && n < (this.failed ? Ee : Te) || (this.loading = !0, W(e.lat, e.lon).then((e) => {
 			this.forecast = e, this.failed = !1;
 		}).catch(() => {
 			this.failed = !0;
@@ -5431,44 +5462,56 @@ var be = "0.1.0", xe = [
 			this.loading = !1, this.fetchedFor = t, this.fetchedAt = Date.now(), this.render();
 		}));
 	}
-	render() {
-		let e = this.settings(), t = he(e.lang, e.units, e.style, this.mode === "kids"), n = this.place(), r = this.forecast, i = r ? ce(r.timezone, Date.now(), r.now) : null, a = r && i && n ? P(r.days, i, {
-			sensitivity: e.sensitivity,
-			latitude: n.lat,
+	render(e = !0) {
+		let t = this.settings(), n = JSON.stringify([
+			this.config,
+			this.mode,
+			t,
+			this.place(),
+			!!this.hassNow?.themes?.darkMode,
+			this.forecast?.fetchedAt,
+			this.failed,
+			Math.floor(Date.now() / 6e4)
+		]);
+		if (!e && n === this.drawn) return;
+		this.drawn = n;
+		let r = he(t.lang, t.units, t.style, this.mode === "kids"), i = this.place(), a = this.forecast, o = a ? ce(a.timezone, Date.now(), a.now) : null, s = a && o && i ? P(a.days, o, {
+			sensitivity: t.sensitivity,
+			latitude: i.lat,
 			forKids: this.mode === "kids",
-			allergies: e.allergies,
-			eyes: e.eyes
-		}) : null, o = i && a ? le(i, a) : "today", s = a ? o === "today" ? a.today ?? a.tomorrow : a.tomorrow : null, c = !!this.hassNow?.themes?.darkMode, l;
-		l = n ? !s || !i ? `<p class="note">${$(t.t(this.failed ? "status.error" : "status.loading"))}</p>` : this.mode === "kids" ? Ne(s, t) : Me(s, t) : `<p class="note">${$("Set a place: a zone, person or device tracker with a position (default: zone.home).")}</p>`;
-		let u = n ? Oe(n.name, o, i, t) : "", d = this.config.show_mode_switch === !1 ? "" : ke(this.mode, t);
+			allergies: t.allergies,
+			eyes: t.eyes
+		}) : null, c = o && s ? le(o, s) : "today", l = s ? c === "today" ? s.today ?? s.tomorrow : s.tomorrow : null, u = !!this.hassNow?.themes?.darkMode, d;
+		d = i ? !l || !o ? `<p class="note">${$(r.t(this.failed ? "status.error" : "status.loading"))}</p>` : this.mode === "kids" ? Le(l, r) : Ie(l, r) : `<p class="note">${$("Set a place: a zone, person or device tracker with a position (default: zone.home).")}</p>`;
+		let f = i ? Me(i.name, c, o, r) : "", p = this.config.show_mode_switch === !1 ? "" : Ne(this.mode, r);
 		this.root.innerHTML = `<style>${X}</style>
-      <ha-card class="lw${c ? " lw--dark" : ""}${this.mode === "kids" ? " lw--kids" : ""}">
-        <div class="lw__top">${u}${d}</div>
-        ${l}
-        <p class="lw__credit">${$(t.t("settings.credit"))}</p>
+      <ha-card class="lw${u ? " lw--dark" : ""}${this.mode === "kids" ? " lw--kids" : ""}">
+        <div class="lw__top">${f}${p}</div>
+        ${d}
+        <p class="lw__credit">${$(r.t("settings.credit"))}</p>
       </ha-card>`;
 	}
 };
-function Oe(e, t, n, r) {
+function Me(e, t, n, r) {
 	let i = n ? r.time(n.hour, n.minute) : "";
 	return `<div class="lw__place">
       <span class="lw__logo">${Y.logo()}</span>
       <span><b>${$(e)}</b><small>${$(r.t(`day.${t}`))}${i ? ` · ${$(i)}` : ""}</small></span>
     </div>`;
 }
-function ke(e, t) {
-	let n = (n) => `<button type="button" data-mode="${n}" aria-pressed="${e === n}">${$(Ee(t.t(`mode.${n}`)))}</button>`;
+function Ne(e, t) {
+	let n = (n) => `<button type="button" data-mode="${n}" aria-pressed="${e === n}">${$(Ae(t.t(`mode.${n}`)))}</button>`;
 	return `<div class="lw__switch" role="group" aria-label="${$(t.t("mode.label"))}">${n("everyone")}${n("kids")}</div>`;
 }
-function Ae(e, t) {
+function Pe(e, t) {
 	return [...new Map(e.map((e) => [t.kind(e), e])).values()];
 }
-function je(e, t) {
+function Fe(e, t) {
 	return `<li class="lw__tile"><span class="lw__box">${Y.clothing(t.kind(e))}</span><span>${$(t.item(e))}</span></li>`;
 }
-function Me(e, t) {
-	let n = e.views[0], r = n?.part ?? e.parts[0].part, i = Ae((e.kids.find((e) => e.part === r)?.wear ?? []).filter((e) => e !== "socksEveryday"), t), a = e.chips.map((e) => `<li class="lw__chip">${Y.ui(e.icon)}${$(t.msg(e.msg))}</li>`).join(""), o = e.strip.map((e) => `<li class="lw__part${e.past ? " lw__part--past" : ""}${e.part === r ? " lw__part--on" : ""}">
-        <span>${$(t.part(e.part))}</span>${Y.weather(e.icon)}<b>${$(t.layers(e.layers))}</b><small>${$(t.temp(e.feels))}</small></li>`).join(""), s = n?.bag, c = s ? s.leaving ? ge(s.bag, t) : B(s, t) : "", l = s ? Ae(s.bag.map((e) => e.kind), t).map((e) => `<span class="lw__mini">${Y.clothing(t.kind(e))}</span>`).join("") : "";
+function Ie(e, t) {
+	let n = e.views[0], r = n?.part ?? e.parts[0].part, i = Pe((e.kids.find((e) => e.part === r)?.wear ?? []).filter((e) => e !== "socksEveryday"), t), a = e.chips.map((e) => `<li class="lw__chip">${Y.ui(e.icon)}${$(t.msg(e.msg))}</li>`).join(""), o = e.strip.map((e) => `<li class="lw__part${e.past ? " lw__part--past" : ""}${e.part === r ? " lw__part--on" : ""}">
+        <span>${$(t.part(e.part))}</span>${Y.weather(e.icon)}<b>${$(t.layers(e.layers))}</b><small>${$(t.temp(e.feels))}</small></li>`).join(""), s = n?.bag, c = s ? s.leaving ? ge(s.bag, t) : B(s, t) : "", l = s ? Pe(s.bag.map((e) => e.kind), t).map((e) => `<span class="lw__mini">${Y.clothing(t.kind(e))}</span>`).join("") : "";
 	return `<div class="lw__main">
       <section class="lw__lead">
         <h2 class="lw__headline">${$(t.msgs(e.headline))}</h2>
@@ -5485,30 +5528,40 @@ function Me(e, t) {
 			all: !1
 		} }
 	}))}</h3>
-        <ul class="lw__tiles">${i.map((e) => je(e, t)).join("")}</ul>
+        <ul class="lw__tiles">${i.map((e) => Fe(e, t)).join("")}</ul>
         ${c ? `<p class="lw__bag"><span class="lw__bag-icon">${Y.ui("backpack")}</span><span><b>${$(t.t("bring.title"))}:</b> ${$(c)}</span><span class="lw__bag-items">${l}</span></p>` : ""}
       </section>
     </div>`;
 }
-function Ne(e, t) {
-	let n = e.kids[0], r = e.parts.find((e) => e.part === n.part)?.conditions ?? e.parts[0].conditions, i = Te(t.t(`word.${r.word}`), t.locale), a = Ae(n.wear, t), o = Ae(n.bag.leaving ? n.bag.bag.map((e) => e.kind) : n.bag.out, t);
+function Le(e, t) {
+	let n = e.kids[0], r = e.parts.find((e) => e.part === n.part)?.conditions ?? e.parts[0].conditions, i = ke(t.t(`word.${r.word}`), t.locale), a = Pe(n.wear, t), o = Pe(n.bag.leaving ? n.bag.bag.map((e) => e.kind) : n.bag.out, t);
 	return `<div class="lw__kids">
       <section class="lw__scene">
         <span class="lw__scene-art">${Y.weather(r.icon)}<span class="lw__face">${Y.face(ue(r.word))}</span></span>
         <span><span class="lw__word">${$(i)}</span><span class="lw__temp">${$(t.temp(r.tempAvg))}</span><small>${$(t.part(n.part))}</small></span>
       </section>
-      <ul class="lw__tiles lw__tiles--kids">${a.map((e) => je(e, t)).join("")}</ul>
-      ${o.length ? `<h3 class="lw__label">${Y.ui("backpack")} ${$(t.t("kids.bag"))}</h3><ul class="lw__tiles lw__tiles--bag">${o.map((e) => je(e, t)).join("")}</ul>` : ""}
+      <ul class="lw__tiles lw__tiles--kids">${a.map((e) => Fe(e, t)).join("")}</ul>
+      ${o.length ? `<h3 class="lw__label">${Y.ui("backpack")} ${$(t.t("kids.bag"))}</h3><ul class="lw__tiles lw__tiles--bag">${o.map((e) => Fe(e, t)).join("")}</ul>` : ""}
     </div>`;
 }
-customElements.get("layers-weather-card") || customElements.define("layers-weather-card", De);
-var Pe = window;
-Pe.customCards = Pe.customCards ?? [], Pe.customCards.some((e) => e.type === "layers-weather-card") || Pe.customCards.push({
+async function Re() {
+	if (customElements.get("ha-form")) return;
+	let e = window;
+	try {
+		await (await (await e.loadCardHelpers?.())?.createCardElement({
+			type: "entities",
+			entities: []
+		}))?.constructor.getConfigElement?.();
+	} catch {}
+}
+customElements.get("layers-weather-card") || customElements.define("layers-weather-card", je);
+var ze = window;
+ze.customCards = ze.customCards ?? [], ze.customCards.some((e) => e.type === "layers-weather-card") || ze.customCards.push({
 	type: "layers-weather-card",
 	name: "Layers Weather",
 	description: "What to wear for the weather today: layers, shoes, hat, umbrella and what to take. For grown-ups and kids.",
 	preview: !0,
 	documentationURL: "https://github.com/eybox/layers-weather-card"
-}), console.info(`%c LAYERS-WEATHER-CARD %c ${be} `, "background:#6031b0;color:#fff;border-radius:4px 0 0 4px", "background:#fcb679;color:#291d18;border-radius:0 4px 4px 0");
+}), console.info(`%c LAYERS-WEATHER-CARD %c ${Ce} `, "background:#6031b0;color:#fff;border-radius:4px 0 0 4px", "background:#fcb679;color:#291d18;border-radius:0 4px 4px 0");
 //#endregion
-export { be as CARD_VERSION };
+export { Ce as CARD_VERSION };
