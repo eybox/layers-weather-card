@@ -3,27 +3,74 @@
 [![HACS: custom repository](https://img.shields.io/badge/HACS-custom%20repository-41BDF5.svg)](https://hacs.xyz/docs/faq/custom_repositories/)
 [![Latest release](https://img.shields.io/github/v/release/eybox/layers-weather-card)](https://github.com/eybox/layers-weather-card/releases/latest)
 
-**What to wear for the weather**, on your Home Assistant dashboard: how many layers, which shoes, hat or not,
-umbrella or not, and what to take with you, for the morning, the afternoon and the evening. Made for a wall
-screen by the front door. From 19:30 it shows tomorrow, so clothes can be laid out the evening before.
+**Know what to wear before you walk out the door.** A dashboard card that turns the weather forecast into clothes:
+how many layers, which shoes, hat or not, umbrella or not, and what to put in the bag, for grown-ups and for kids.
+
+![The card on a wall tablet: the grown-ups view, with the day in a few words, the morning, afternoon and evening, and what to wear this morning](docs/wall-grown-ups.png)
+
+## What it is
+
+Layers Weather is a weather app that answers one question: **what should I wear today?** The forecast is still
+there, but it comes second. This card brings it to your Home Assistant dashboard, ideally on a tablet by the front
+door, so the whole family sees it on the way out.
+
+It plans the day in three parts (morning, afternoon, evening) and tells you:
+- **what to wear now**: the layers, trousers or shorts, shoes and socks, hat, scarf and gloves;
+- **what to take with you**: the umbrella for the afternoon rain, sunglasses for later, water on a hot day;
+- **why**, in a few plain words: "Cold at first, warm later. Staying dry."
+
+From 19:30 it shows tomorrow, so clothes can be laid out the evening before. It is the Home Assistant version of
+the [Layers Weather web app](https://weather.ecortex.eu), with the same rules and words, in English, German,
+French, Spanish and Bulgarian.
+
+## Why it exists
+
+Weather apps give you numbers: "14°, 60%, 25 km/h". Everyone then has to turn those numbers into clothes
+themselves, every morning, and children can't do that at all. Layers Weather does that step for you, and says why,
+so people also learn to read the weather.
+
+The rules behave like a sensible parent would: better a jacket too many than a cold child, one shirt for the whole
+day, no umbrella in strong wind, a waterproof coat when it's too windy for one, and nothing in the bag that nobody
+would carry.
+
+## Who it's for
+
+- **Families with children from 3 to 12**, including children who can't read yet: the **Kids** view has one big
+  weather word with a face, and big pictures of what to put on.
+- **Grown-ups who want the answer, not the forecast**: the **Grown-ups** view says it in a few words.
+- **Anyone with a Home Assistant dashboard by the door**: a wall tablet, a kitchen display or a phone.
+- **People who feel the cold (or the heat) more than most**, and people with hay fever: a setting makes the advice
+  warmer or lighter, and another adds tissues and a mask on high-pollen or poor-air days.
+
+It is made for places with seasons (the temperate zones, from Scandinavia to the Mediterranean and similar climates
+elsewhere), not for deserts, the tropics or polar regions.
+
+## What you'll see
 
 One card, two views, with a switch at the top:
 
-- **Grown-ups** (the default): the day in a few words, the weather at a glance, the parts of the day, what to
-  wear now and what to put in the bag.
-- **Kids**: one big weather word with a face, and big pictures of what to put on, for children who can't read yet.
+- **Grown-ups** (the default): the day in a few words, the weather at a glance, the morning, afternoon and evening,
+  what to wear now, and what to take with you.
+- **Kids**: one big weather word with a face, and big pictures of what to put on (and what goes in the bag).
 
-It is the Home Assistant version of [Layers Weather](https://weather.ecortex.eu) and uses the same rules and words,
-in English, German, French, Spanish and Bulgarian.
+It follows your Home Assistant theme, light or dark, and fits a phone as well as a wall tablet.
 
-![The card on a wall tablet: the grown-ups view](docs/wall-grown-ups.png)
-
-| Kids view | Dark theme |
-|---|---|
-| ![The kids view](docs/wall-kids.png) | ![The kids view in a dark theme](docs/wall-kids-dark.png) |
+<table>
+  <tr>
+    <th>Kids view</th>
+    <th>Dark theme</th>
+    <th>On a phone</th>
+  </tr>
+  <tr>
+    <td><img src="docs/wall-kids.png" alt="The kids view: a big weather word with a face, and big pictures of what to put on" width="420"></td>
+    <td><img src="docs/wall-grown-ups-dark.png" alt="The grown-ups view in a dark theme" width="420"></td>
+    <td><img src="docs/phone-grown-ups.png" alt="The grown-ups view on a phone" width="200"></td>
+  </tr>
+</table>
 
 ## Contents
 
+- [What it is](#what-it-is) · [Why it exists](#why-it-exists) · [Who it's for](#who-its-for) · [What you'll see](#what-youll-see)
 - [Before you start](#before-you-start)
 - [Install](#install): [with HACS](#option-a-with-hacs-recommended), [by hand](#option-b-by-hand-without-hacs),
   [YAML-mode dashboards](#if-your-dashboards-are-in-yaml-mode)
