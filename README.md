@@ -140,11 +140,11 @@ The file should end up as `config/www/layers-weather-card.js`.
    **Advanced mode**.
 2. Go to **Settings → Dashboards**, open the menu **⋮** (top right) and choose **Resources**.
 3. Press **+ Add resource** (bottom right) and fill in:
-   - **URL:** `/local/layers-weather-card.js?v=0.1.1`
+   - **URL:** `/local/layers-weather-card.js?v=0.1.2`
    - **Resource type:** **JavaScript module**
 4. Press **Create**, then reload the page (**Ctrl + F5** / **Cmd + Shift + R**).
 
-The `?v=0.1.1` at the end is the version. When you update the card by hand later, change it to the new version
+The `?v=0.1.2` at the end is the version. When you update the card by hand later, change it to the new version
 number, so every screen loads the new file instead of an old saved copy.
 
 ### If your dashboards are in YAML mode
@@ -170,7 +170,7 @@ In YAML mode, Home Assistant ignores the **Resources** page, so the card has to 
        - url: /hacsfiles/layers-weather-card/layers-weather-card.js
          type: module
        # Or installed by hand (use this line instead of the one above):
-       # - url: /local/layers-weather-card.js?v=0.1.1
+       # - url: /local/layers-weather-card.js?v=0.1.2
        #   type: module
    ```
 
@@ -209,6 +209,7 @@ Everything is optional. The card's visual editor has all of these; in YAML, add 
 | `units` | °C and km/h, or °F and mph. | `metric`, `imperial` | Home Assistant's unit system |
 | `sensitivity` | How warm the advice is. | `cold` (dresses you warmer), `normal`, `hot` (lighter) | `normal` |
 | `style` | The clothes pictures. Kids see girl / boy. | `women`, `men` | Neutral pictures |
+| `summer` | With `style: women`: what to show on warm days. `dress` puts on a dress only on properly hot days (25 °C / 77 °F and up); other warm days stay top and skirt. | `skirt` (top & skirt), `shorts` (top & shorts), `dress` | `skirt` |
 | `eyes` | Eye colour: lighter eyes get sunglasses sooner. | `brown`, `hazel`, `green`, `blue` | `brown` |
 | `allergies` | Tissues on high-pollen days, and a mask sooner when the air is poor. | `true`, `false` | `false` |
 
@@ -230,6 +231,14 @@ type: custom:layers-weather-card
 mode: kids
 show_mode_switch: false
 style: women   # girl pictures (use men for boy pictures)
+```
+
+**Women's clothes, with a dress on hot days:**
+
+```yaml
+type: custom:layers-weather-card
+style: women
+summer: dress
 ```
 
 **Someone who always feels the cold, in German:**
@@ -314,7 +323,7 @@ the settings in YAML (see [Settings](#settings)), and please [report it](https:/
 ### Something else
 
 [Open an issue](https://github.com/eybox/layers-weather-card/issues) with your Home Assistant version, the card
-version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.1.1`), the
+version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.1.2`), the
 device and browser showing it, and a screenshot.
 
 ## Remove

@@ -24,6 +24,7 @@ var e = {
 	snowDepth: .02,
 	sunnyCloud: 70,
 	shortsFrom: 22,
+	dressFrom: 25,
 	thermalsAt: 0,
 	snowPantsAt: 2,
 	beanieAt: 5,
@@ -83,6 +84,7 @@ var e = {
 		uv: 3
 	}
 }, o = [
+	"dress",
 	"tshirt",
 	"longsleeve",
 	"sweater",
@@ -126,12 +128,12 @@ function f(t, r, a, o = 0) {
 	}, _ = m((e) => e.feels), v = _ + i[a], y = p((e) => e.precipProb), b = h((e) => e.precip), x = p((e) => e.wind), S = p((e) => e.gusts), C = h((e) => e.snowfall) > 0 || p((e) => e.snowDepth) >= n.snowDepth, w = f.reduce((e, t) => c(t.code) > c(e.code) ? t : e, f[0]), T = S >= n.windyGusts, E = (e) => {
 		let t = /(\d{1,2}):(\d{2})/.exec(e);
 		return t ? Number(t[1]) * 60 + Number(t[2]) : null;
-	}, D = E(t.sunrise), O = E(t.sunset), ee = (D === null || O === null ? 0 : f.reduce((e, t) => {
+	}, D = E(t.sunrise), O = E(t.sunset), k = (D === null || O === null ? 0 : f.reduce((e, t) => {
 		let r = Math.max(t.hour * 60, 420), i = Math.min((t.hour + 1) * 60, n.reflectorUntilHour * 60);
 		if (i <= r) return e;
 		let a = Math.max(0, Math.min(i, D) - r), o = Math.max(0, i - Math.max(r, O));
 		return e + a + o;
-	}, 0)) >= n.reflectorDarkMinutes, k = f.filter((e) => e.precipProb >= n.rainProb).length, A = t.hours.filter((t) => t.hour >= e.morning[0] && t.hour < e.evening[1]);
+	}, 0)) >= n.reflectorDarkMinutes, A = f.filter((e) => e.precipProb >= n.rainProb).length, j = t.hours.filter((t) => t.hour >= e.morning[0] && t.hour < e.evening[1]);
 	return {
 		part: r,
 		hours: f.map((e) => e.hour),
@@ -147,19 +149,19 @@ function f(t, r, a, o = 0) {
 		gustMax: S,
 		uvMax: p((e) => e.uv),
 		cloudAvg: h((e) => e.cloud) / f.length,
-		rainy: k >= n.persistHours || f.some((e) => e.precipProb >= n.rainSureProb && e.precip >= n.rainSureMm),
+		rainy: A >= n.persistHours || f.some((e) => e.precipProb >= n.rainSureProb && e.precip >= n.rainSureMm),
 		breezy: x >= n.breezyWind || T,
 		windy: T,
 		storm: f.some((e) => e.code >= 95),
 		icy: f.some((e) => u.includes(e.code)) || f.some((e) => e.precip > 0) && m((e) => e.temp) <= 0,
-		dark: ee,
+		dark: k,
 		fog: f.filter((e) => e.code === 45 || e.code === 48).length >= n.persistHours,
 		uvByHour: f.map((e) => e.uv),
 		tempByHour: f.map((e) => e.temp),
-		dayUvByHour: A.map((e) => e.uv),
-		dayTempByHour: A.map((e) => e.temp),
+		dayUvByHour: j.map((e) => e.uv),
+		dayTempByHour: j.map((e) => e.temp),
 		sunByHour: t.hours.every((e) => typeof e.sunshine == "number") ? f.map((e) => e.sunshine) : null,
-		daySunByHour: t.hours.every((e) => typeof e.sunshine == "number") ? A.map((e) => e.sunshine) : null,
+		daySunByHour: t.hours.every((e) => typeof e.sunshine == "number") ? j.map((e) => e.sunshine) : null,
 		humidityAvg: g((e) => e.humidity, (e) => e.reduce((e, t) => e + t, 0) / e.length),
 		particlesMax: g((e) => e.particles, (e) => Math.max(...e)),
 		pollen: g((e) => e.pollen, (e) => Math.max(...e)),
@@ -337,13 +339,13 @@ function O(e) {
 	let t = e.find((e) => e.id === "extras").items.find((e) => e.kind === "repellent");
 	t?.active && (t.note = { kind: "apply" });
 }
-function ee(e, t, n) {
+function k(e, t, n) {
 	let r = e.find((e) => e.id === "extras"), i = r.items.find((e) => e.kind === "sunscreen");
 	if (!i || !i.active || !t || (i.note = t, !n)) return;
 	let a = r.detail.findIndex((e) => e.key === "extras.detail.sun");
 	n.replace && a >= 0 && (r.detail[a] = { key: "extras.detail.sunLater" }), n.extra && r.detail.splice(a >= 0 ? a + 1 : r.detail.length, 0, n.extra);
 }
-function k(r, i) {
+function A(r, i) {
 	let a = i.fromHour ?? 0, o = t.map((e) => f(r, e, i.sensitivity, a)).filter((e) => e !== null);
 	if (o.length === 0) return null;
 	let s = o.some((e) => e.rainy && !e.snow), c = i.latitude === void 0 ? void 0 : m(r.date, i.latitude), l = i.forKids, u = i.allergies, d = i.eyes, v = o.map((e) => h(e, {
@@ -372,8 +374,8 @@ function k(r, i) {
 		"sneakers",
 		"rainboots",
 		"snowboots"
-	], k = v.reduce((e, t) => E.indexOf(t.shoes) > E.indexOf(e) ? t.shoes : e, "sandals"), re = v.some((e) => e.legs.includes("trousers")), ie = v.some((e) => e.legs.includes("thermals")), ae = p(k, Math.min(...v.map((e) => e.conditions.effective)), v.some((e) => e.legs.includes("snowpants")));
-	for (let e of v) e.shoes = k, e.socks = ae, re && (e.legs = e.legs.map((e) => e === "shorts" ? "trousers" : e)), ie && !e.legs.includes("thermals") && (e.legs = ["thermals", ...e.legs]), ae || (e.extras = e.extras.filter((e) => e !== "socks"));
+	], A = v.reduce((e, t) => E.indexOf(t.shoes) > E.indexOf(e) ? t.shoes : e, "sandals"), ne = v.some((e) => e.legs.includes("trousers")), re = v.some((e) => e.legs.includes("thermals")), ie = p(A, Math.min(...v.map((e) => e.conditions.effective)), v.some((e) => e.legs.includes("snowpants")));
+	for (let e of v) e.shoes = A, e.socks = ie, ne && (e.legs = e.legs.map((e) => e === "shorts" ? "trousers" : e)), re && !e.legs.includes("thermals") && (e.legs = ["thermals", ...e.legs]), ie || (e.extras = e.extras.filter((e) => e !== "socks"));
 	if (l) {
 		let e = v.filter((e) => e.conditions.rainy && !e.conditions.snow && !e.umbrella);
 		if (e.length > 0) {
@@ -381,7 +383,7 @@ function k(r, i) {
 			for (let t of e) t.extras.push("poncho"), t.hood = !0;
 		}
 	}
-	if (v.some((e) => e.layers[0] === "tshirt") && v.forEach((e, t) => {
+	v.some((e) => e.layers[0] === "tshirt") && v.forEach((e, t) => {
 		if (e.layers[0] !== "longsleeve") return;
 		if (e.layers.length > 1) {
 			e.layers = ["tshirt", ...e.layers];
@@ -389,26 +391,29 @@ function k(r, i) {
 		}
 		let n = [v[t - 1], v[t + 1]].find((e) => e && e.layers.length > 1 && e.layers[0] === "tshirt");
 		e.layers = ["tshirt", n ? n.layers[1] : "longsleeve"];
-	}), v.some((e) => e.head === "beanie")) for (let e of v) (e.head === "sunhat" || e.head === "cap") && (e.head = null);
+	});
+	let ae = Math.max(...v.map((e) => e.conditions.effective)) >= n.dressFrom;
+	if (i.dress && ae && v.every((e) => e.layers[0] === "tshirt" && e.legs.length === 1 && e.legs[0] === "shorts")) for (let e of v) e.layers = ["dress", ...e.layers.slice(1)], e.legs = [];
+	if (v.some((e) => e.head === "beanie")) for (let e of v) (e.head === "sunhat" || e.head === "cap") && (e.head = null);
 	if (v.some((e) => e.head === "cap")) for (let e of v) e.head === "sunhat" && (e.head = "cap");
-	let j = c !== !1, oe = v.map((e) => e.extras.includes("sunscreen")), M = oe.indexOf(!0), N = !j && M > 0;
-	if (N) {
+	let M = c !== !1, N = v.map((e) => e.extras.includes("sunscreen")), oe = N.indexOf(!0), P = !M && oe > 0;
+	if (P) {
 		let e = v[0].extras.findIndex((e) => e === "water" || e === "reflector");
 		v[0].extras.splice(e < 0 ? v[0].extras.length : e, 0, "sunscreen");
 	}
 	let ce = (e) => {
-		if (v[e].extras.includes("sunscreen")) return j ? { kind: e === M ? "apply" : "reapply" } : { kind: e === 0 ? "applyOnce" : "applied" };
-	}, P = s ? ne(r, a) : null, F = A(v, b, P);
-	ee(F, M < 0 ? void 0 : { kind: j ? "reapply" : "applyOnce" }), O(F);
-	let le = Math.max(...v.map((e) => e.conditions.gustMax)), I = v.some((e) => e.conditions.windy), L = v.some((e) => e.conditions.snow), ue = v.some((e) => e.umbrella), de = v.some((e) => e.hood), R = v.some((e) => e.conditions.storm), fe = v.some((e) => e.conditions.icy), pe = Math.max(...v.map((e) => e.conditions.uvMax)), me = v.find((e) => e.head === "sunhat" || e.head === "cap")?.head, z = v.some((e) => e.extras.includes("sunscreen")), he = v.some((e) => e.extras.includes("sunglasses")), ge = me ? `hl.${me === "cap" ? z ? "sun.cap" : "cap" : z ? "sun" : "sunhat"}` : z ? "hl.sunscreen" : he ? "hl.sunglasses" : null, _e = v.map((e) => e.layers.length), B = v[0], V = B.layers.length, ve = _e.some((e) => e !== V), H;
-	H = V >= 4 ? "hl.bundle" : V === 3 ? "hl.wrap" : V === 2 ? "hl.layer" : B.layers[0] === "tshirt" ? "hl.tshirt" : "hl.light";
-	let U = [ve ? {
+		if (v[e].extras.includes("sunscreen")) return M ? { kind: e === oe ? "apply" : "reapply" } : { kind: e === 0 ? "applyOnce" : "applied" };
+	}, F = s ? te(r, a) : null, I = j(v, b, F);
+	k(I, oe < 0 ? void 0 : { kind: M ? "reapply" : "applyOnce" }), O(I);
+	let le = Math.max(...v.map((e) => e.conditions.gustMax)), L = v.some((e) => e.conditions.windy), R = v.some((e) => e.conditions.snow), ue = v.some((e) => e.umbrella), de = v.some((e) => e.hood), fe = v.some((e) => e.conditions.storm), pe = v.some((e) => e.conditions.icy), me = Math.max(...v.map((e) => e.conditions.uvMax)), he = v.find((e) => e.head === "sunhat" || e.head === "cap")?.head, z = v.some((e) => e.extras.includes("sunscreen")), ge = v.some((e) => e.extras.includes("sunglasses")), _e = he ? `hl.${he === "cap" ? z ? "sun.cap" : "cap" : z ? "sun" : "sunhat"}` : z ? "hl.sunscreen" : ge ? "hl.sunglasses" : null, ve = v.map((e) => e.layers.length), B = v[0], V = B.layers.length, ye = ve.some((e) => e !== V), H;
+	H = V >= 4 ? "hl.bundle" : V === 3 ? "hl.wrap" : V === 2 ? "hl.layer" : B.layers[0] === "tshirt" ? "hl.tshirt" : B.layers[0] === "dress" ? "hl.dress" : "hl.light";
+	let U = [ye ? {
 		key: `${H}.when`,
 		params: { when: _([B.part], b) }
 	} : { key: H }];
-	R ? U.push({ key: "hl.storm" }) : fe ? U.push({ key: "hl.icy" }) : de && !L ? U.push({ key: "hl.rainjacket" }) : ue ? U.push({ key: "hl.umbrella" }) : L ? U.push({ key: "hl.snow" }) : ge ? U.push({ key: ge }) : I ? U.push({ key: "hl.windy" }) : U.push({ key: "hl.dry" });
-	let W = v.map((e) => e.conditions.word), G = [], ye = W.slice(1).find((e) => e !== W[0]);
-	ye ? G.push({
+	fe ? U.push({ key: "hl.storm" }) : pe ? U.push({ key: "hl.icy" }) : de && !R ? U.push({ key: "hl.rainjacket" }) : ue ? U.push({ key: "hl.umbrella" }) : R ? U.push({ key: "hl.snow" }) : _e ? U.push({ key: _e }) : L ? U.push({ key: "hl.windy" }) : U.push({ key: "hl.dry" });
+	let W = v.map((e) => e.conditions.word), G = [], be = W.slice(1).find((e) => e !== W[0]);
+	be ? G.push({
 		key: "sum.change",
 		params: {
 			from: {
@@ -417,7 +422,7 @@ function k(r, i) {
 			},
 			to: {
 				kind: "word",
-				word: ye
+				word: be
 			}
 		}
 	}) : G.push({
@@ -426,13 +431,13 @@ function k(r, i) {
 			kind: "word",
 			word: W[0]
 		} }
-	}), L ? G.push({ key: "sum.snow" }) : P ? G.push({
+	}), R ? G.push({ key: "sum.snow" }) : F ? G.push({
 		key: "sum.rain",
 		params: { window: {
 			kind: "window",
-			...P
+			...F
 		} }
-	}) : G.push({ key: "sum.dry" }), I && G.push({
+	}) : G.push({ key: "sum.dry" }), L && G.push({
 		key: "sum.gusts",
 		params: { speed: {
 			kind: "speed",
@@ -464,28 +469,28 @@ function k(r, i) {
 				}
 			}
 		}
-	}), R && K.push({
+	}), fe && K.push({
 		icon: "rain",
 		msg: { key: "chip.storm" }
-	}), fe && K.push({
+	}), pe && K.push({
 		icon: "snow",
 		msg: { key: "chip.icy" }
-	}), L ? K.push({
+	}), R ? K.push({
 		icon: "snow",
 		msg: { key: "chip.snow" }
-	}) : P ? K.push({
+	}) : F ? K.push({
 		icon: "rain",
 		msg: {
 			key: "chip.rain",
 			params: { window: {
 				kind: "window",
-				...P
+				...F
 			} }
 		}
 	}) : K.push({
 		icon: "dry",
 		msg: { key: "chip.dry" }
-	}), I) {
+	}), L) {
 		let e = v.filter((e) => e.conditions.windy).map((e) => e.part);
 		K.push({
 			icon: "wind",
@@ -495,11 +500,11 @@ function k(r, i) {
 			}
 		});
 	}
-	pe >= n.uvProtect && K.push({
+	me >= n.uvProtect && K.push({
 		icon: "sun",
 		msg: {
 			key: "chip.uv",
-			params: { value: Math.round(pe) }
+			params: { value: Math.round(me) }
 		}
 	});
 	let X = t.flatMap((e) => {
@@ -519,7 +524,7 @@ function k(r, i) {
 			}),
 			past: !0
 		}] : [];
-	}), Z = D(v, P, j), be = Z[0].bag, xe = X.map(({ outfit: e, past: t }) => {
+	}), Z = D(v, F, M), xe = Z[0].bag, Se = X.map(({ outfit: e, past: t }) => {
 		let n = t ? void 0 : Z.find((t) => t.part === e.part);
 		return {
 			part: e.part,
@@ -542,20 +547,20 @@ function k(r, i) {
 			off: i.filter((e) => !r.includes(e)),
 			on: r.filter((e) => !i.includes(e))
 		};
-	}, Se = v.map((t, n) => {
-		let [i, o] = e[t.part], s = Q(t), c = t.conditions.rainy && !t.conditions.snow ? ne(r, Math.max(a, i), o) : null, l = () => A([t], {
+	}, Ce = v.map((t, n) => {
+		let [i, o] = e[t.part], s = Q(t), c = t.conditions.rainy && !t.conditions.snow ? te(r, Math.max(a, i), o) : null, l = () => j([t], {
 			total: 1,
 			single: !0
 		}, c), u = l();
-		s && te(u, s);
-		let d = l(), f = n === 0 ? j ? {
+		s && ee(u, s);
+		let d = l(), f = n === 0 ? M ? {
 			replace: !1,
-			extra: oe.slice(1).some(Boolean) ? { key: "extras.detail.sunCarry" } : void 0
+			extra: N.slice(1).some(Boolean) ? { key: "extras.detail.sunCarry" } : void 0
 		} : {
-			replace: N,
-			extra: N ? void 0 : { key: "extras.detail.sunOnce" }
+			replace: P,
+			extra: P ? void 0 : { key: "extras.detail.sunOnce" }
 		} : void 0;
-		for (let e of [d, u]) ee(e, ce(n), f), O(e);
+		for (let e of [d, u]) k(e, ce(n), f), O(e);
 		return {
 			part: t.part,
 			cards: d,
@@ -563,7 +568,7 @@ function k(r, i) {
 			change: s,
 			bag: Z[n]
 		};
-	}), Ce = v.map((e, t) => {
+	}), we = v.map((e, t) => {
 		let n = e.extras.filter((e) => e !== "poncho" && (!y.includes(e) || w.includes(e))), r = [
 			...e.legs,
 			...e.layers,
@@ -583,23 +588,23 @@ function k(r, i) {
 			storm: e.conditions.storm,
 			bag: Z[t]
 		};
-	}), we = [
+	}), Te = [
 		...U,
 		{
 			key: "speech.wear",
 			params: { items: {
 				kind: "items",
-				items: Ce[0].wear.filter((e) => e !== "umbrella" && e !== "socksEveryday")
+				items: we[0].wear.filter((e) => e !== "umbrella" && e !== "socksEveryday")
 			} }
 		},
-		...F[0].detail.slice(0, 1),
-		F.find((e) => e.id === "rain").title
+		...I[0].detail.slice(0, 1),
+		I.find((e) => e.id === "rain").title
 	];
-	return be.length > 0 && we.push({
+	return xe.length > 0 && Te.push({
 		key: "speech.bring",
 		params: { items: {
 			kind: "items",
-			items: be.map((e) => e.kind)
+			items: xe.map((e) => e.kind)
 		} }
 	}), {
 		date: r.date,
@@ -607,16 +612,16 @@ function k(r, i) {
 		headline: U,
 		summary: G,
 		chips: K,
-		strip: xe,
-		cards: F,
-		views: Se,
-		kids: Ce,
+		strip: Se,
+		cards: I,
+		views: Ce,
+		kids: we,
 		numbers: se(r, a),
 		theme: g(B.conditions),
-		speech: we
+		speech: Te
 	};
 }
-function A(e, t, n) {
+function j(e, t, n) {
 	let r = {
 		parts: e,
 		scope: t,
@@ -627,15 +632,15 @@ function A(e, t, n) {
 		} : void 0
 	}, i = Math.max(...e.map((e) => e.conditions.gustMax)), a = e.some((e) => e.conditions.breezy), o = e.some((e) => e.conditions.snow), s = e.some((e) => e.umbrella), c = e.some((e) => e.hood), l = Math.max(...e.map((e) => e.conditions.uvMax));
 	return [
-		re(r, a),
-		ie(r),
-		ae(e, n),
-		j(r, c),
-		oe(r, n, i, o, s, c),
-		N(r, a, l)
+		ne(r, a),
+		re(r),
+		ie(e, n),
+		ae(r, c),
+		M(r, n, i, o, s, c),
+		oe(r, a, l)
 	];
 }
-function te(e, { on: t, off: n }) {
+function ee(e, { on: t, off: n }) {
 	for (let r of e) for (let e of r.items) e.active && t.includes(e.kind) && !e.note && (e.note = { kind: "putOn" }), !e.active && n.includes(e.kind) && (e.note = { kind: "takeOff" });
 	let r = e.find((e) => e.id === "layers");
 	for (let e of n) o.includes(e) && !r.items.some((t) => t.kind === e) && r.items.push({
@@ -644,14 +649,14 @@ function te(e, { on: t, off: n }) {
 		note: { kind: "takeOff" }
 	});
 }
-function ne(e, t, r = 22) {
+function te(e, t, r = 22) {
 	let i = e.hours.filter((e) => e.hour >= Math.max(t, 7) && e.hour < r && (e.precipProb >= n.rainProb || e.precip >= .2 && e.precipProb >= n.rainMmMinProb));
 	return i.length === 0 ? null : {
 		from: i[0].hour,
 		to: i[i.length - 1].hour + 1
 	};
 }
-function re({ parts: e, scope: n, presentIn: r, partialNote: i }, a) {
+function ne({ parts: e, scope: n, presentIn: r, partialNote: i }, a) {
 	let s = o.filter((t) => e.some((e) => e.layers.includes(t))), c = e.some((e) => e.swappedForRain), l = s.map((t) => {
 		let n = i(r((e) => e.layers.includes(t))), a = n;
 		!n && t === "rainjacket" && c && (a = { kind: "swapped" });
@@ -745,7 +750,16 @@ function re({ parts: e, scope: n, presentIn: r, partialNote: i }, a) {
 		items: l
 	};
 }
-function ie({ parts: e, scope: t, presentIn: r, partialNote: i }) {
+function re({ parts: e, scope: t, presentIn: r, partialNote: i }) {
+	if (e.every((e) => e.legs.length === 0 && e.layers[0] === "dress")) return {
+		id: "legs",
+		title: { key: "legs.title.dress" },
+		detail: [{ key: "legs.detail.dress" }],
+		items: [{
+			kind: "dress",
+			active: !0
+		}]
+	};
 	let a = r((e) => e.legs.includes("trousers")), o = r((e) => e.conditions.effective >= n.shortsFrom && !e.conditions.snow), s = a.length > 0 ? "trousers" : "shorts", c = r((e) => e.legs.includes("thermals")), l = r((e) => e.legs.includes("snowpants")), u = [
 		{
 			kind: "shorts",
@@ -778,7 +792,7 @@ function ie({ parts: e, scope: t, presentIn: r, partialNote: i }) {
 		items: u
 	};
 }
-function ae(e, t) {
+function ie(e, t) {
 	let n = [
 		"sandals",
 		"sneakers",
@@ -814,7 +828,7 @@ function ae(e, t) {
 		items: a
 	};
 }
-function j({ parts: e, scope: t, presentIn: n, partialNote: r }, i) {
+function ae({ parts: e, scope: t, presentIn: n, partialNote: r }, i) {
 	let a = [
 		"sunhat",
 		"cap",
@@ -857,7 +871,7 @@ function j({ parts: e, scope: t, presentIn: n, partialNote: r }, i) {
 		items: o
 	};
 }
-function oe({ parts: e, scope: t, presentIn: n }, r, i, a, o, s) {
+function M({ parts: e, scope: t, presentIn: n }, r, i, a, o, s) {
 	let c = e.find((e) => e.hood), l = c ? c.extras.includes("poncho") ? "poncho" : c.layers[c.layers.length - 1] : "rainjacket", u = r ? {
 		kind: "window",
 		...r
@@ -959,7 +973,7 @@ function oe({ parts: e, scope: t, presentIn: n }, r, i, a, o, s) {
 		items: m
 	};
 }
-var M = [
+var N = [
 	"reflector",
 	"poncho",
 	"mask",
@@ -971,14 +985,14 @@ var M = [
 	"repellent",
 	"socks"
 ];
-function N({ parts: e, presentIn: t, partialNote: n }, r, i) {
+function oe({ parts: e, presentIn: t, partialNote: n }, r, i) {
 	let a = [
 		"scarf",
 		"gloves",
 		"sunglasses",
 		"sunscreen"
 	];
-	for (let e of M) t((t) => t.extras.includes(e)).length > 0 && a.push(e);
+	for (let e of N) t((t) => t.extras.includes(e)).length > 0 && a.push(e);
 	let o = a.map((e) => {
 		let r = t((t) => t.extras.includes(e));
 		return {
@@ -991,7 +1005,7 @@ function N({ parts: e, presentIn: t, partialNote: n }, r, i) {
 		key: "extras.detail.sun",
 		params: { value: Math.round(i) }
 	});
-	for (let t of M) {
+	for (let t of N) {
 		if (!s.includes(t)) continue;
 		let n = t === "socks" ? e[0].socks : null;
 		c.push(n ? {
@@ -1028,7 +1042,7 @@ function se(e, t) {
 		sunset: e.sunset
 	};
 }
-function ce(e, t, n) {
+function P(e, t, n) {
 	if (e) try {
 		let n = new Intl.DateTimeFormat("en-CA", {
 			timeZone: e,
@@ -1051,25 +1065,25 @@ function ce(e, t, n) {
 		minute: Number(n.slice(14, 16))
 	} : null;
 }
-function P(e, t, n) {
+function ce(e, t, n) {
 	let r = e.find((e) => e.date === t.date);
 	if (!r) return null;
 	let i = e.find((e) => e.date > r.date);
 	return {
-		today: k(r, {
+		today: A(r, {
 			...n,
 			fromHour: t.hour
 		}),
-		tomorrow: i ? k(i, n) : null
+		tomorrow: i ? A(i, n) : null
 	};
 }
 var F = (e, t) => e.hour * 60 + e.minute >= 1170 && !!t?.tomorrow;
-function le(e, t) {
+function I(e, t) {
 	return F(e, t) || t !== null && t.today === null ? "tomorrow" : "today";
 }
 //#endregion
 //#region src/engine/style.ts
-var I = {
+var le = {
 	girl: {
 		tshirt: "top",
 		sweater: "cardigan",
@@ -1083,10 +1097,10 @@ var I = {
 		sunhat: "cap"
 	}
 };
-function L(e, t) {
-	return t === "neutral" ? e : I[t][e] ?? e;
+function L(e, t, n = "skirt") {
+	return t === "neutral" || t === "girl" && e === "shorts" && n === "shorts" ? e : le[t][e] ?? e;
 }
-var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e === "hot" ? "hot" : "good", de = [
+var R = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e === "hot" ? "hot" : "good", ue = [
 	{
 		id: "en",
 		name: "English"
@@ -1107,7 +1121,7 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		id: "bg",
 		name: "Български"
 	}
-], R = {
+], de = {
 	"app.tagline": "Dress for the weather, not the numbers.",
 	"mode.label": "Mode",
 	"mode.everyone": "Grown-ups (12+)",
@@ -1184,6 +1198,15 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 	"settings.style.women": "Women’s",
 	"settings.style.men": "Men’s",
 	"settings.howItWorks": "How it works",
+	"settings.summer": "Summer clothes",
+	"settings.summer.skirt": "Top & skirt",
+	"settings.summer.shorts": "Top & shorts",
+	"settings.summer.dress": "A dress on hot days",
+	"settings.summer.hint": "A dress only on properly hot days ({temp} and up); on other warm days, top and skirt.",
+	"hl.dress": "Dress weather.",
+	"hl.dress.when": "Dress weather {when}.",
+	"legs.title.dress": "Dress weather",
+	"legs.detail.dress": "A dress covers your legs too: nothing else needed.",
 	"settings.appearance": "Appearance",
 	"settings.appearance.auto": "Automatic",
 	"settings.appearance.light": "Light",
@@ -1819,7 +1842,7 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 	"a11y.skip": "Skip to content",
 	"status.dayOver": "Today is almost over, so here is tomorrow."
 }, fe = {
-	en: R,
+	en: de,
 	de: {
 		"app.tagline": "Zieh dich fürs Wetter an, nicht für die Zahlen.",
 		"mode.label": "Modus",
@@ -1897,6 +1920,15 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.style.women": "Damen",
 		"settings.style.men": "Herren",
 		"settings.howItWorks": "So funktioniert’s",
+		"settings.summer": "Sommerkleidung",
+		"settings.summer.skirt": "Top & Rock",
+		"settings.summer.shorts": "Top & Shorts",
+		"settings.summer.dress": "Kleid an heißen Tagen",
+		"settings.summer.hint": "Ein Kleid nur an richtig heißen Tagen (ab {temp}); an anderen warmen Tagen Top und Rock.",
+		"hl.dress": "Kleid-Wetter.",
+		"hl.dress.when": "Kleid-Wetter {when}.",
+		"legs.title.dress": "Kleid-Wetter",
+		"legs.detail.dress": "Ein Kleid deckt auch die Beine ab: sonst nichts nötig.",
 		"settings.appearance": "Darstellung",
 		"settings.appearance.auto": "Automatisch",
 		"settings.appearance.light": "Hell",
@@ -2603,6 +2635,15 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.style.women": "Femme",
 		"settings.style.men": "Homme",
 		"settings.howItWorks": "Comment ça marche",
+		"settings.summer": "Tenue d’été",
+		"settings.summer.skirt": "Haut & jupe",
+		"settings.summer.shorts": "Haut & short",
+		"settings.summer.dress": "Une robe les jours chauds",
+		"settings.summer.hint": "Une robe seulement les jours vraiment chauds (dès {temp}) ; les autres jours chauds, haut et jupe.",
+		"hl.dress": "Temps à robe.",
+		"hl.dress.when": "Temps à robe {when}.",
+		"legs.title.dress": "Temps à robe",
+		"legs.detail.dress": "La robe couvre aussi les jambes : rien d’autre à mettre.",
 		"settings.appearance": "Apparence",
 		"settings.appearance.auto": "Automatique",
 		"settings.appearance.light": "Clair",
@@ -3309,6 +3350,15 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.style.women": "Mujer",
 		"settings.style.men": "Hombre",
 		"settings.howItWorks": "Cómo funciona",
+		"settings.summer": "Ropa de verano",
+		"settings.summer.skirt": "Blusa y falda",
+		"settings.summer.shorts": "Blusa y pantalón corto",
+		"settings.summer.dress": "Un vestido los días de calor",
+		"settings.summer.hint": "Un vestido solo los días de mucho calor (desde {temp}); los demás días cálidos, blusa y falda.",
+		"hl.dress": "Tiempo de vestido.",
+		"hl.dress.when": "Tiempo de vestido {when}.",
+		"legs.title.dress": "Tiempo de vestido",
+		"legs.detail.dress": "El vestido también cubre las piernas: no hace falta nada más.",
 		"settings.appearance": "Apariencia",
 		"settings.appearance.auto": "Automática",
 		"settings.appearance.light": "Clara",
@@ -4015,6 +4065,15 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.style.women": "Дамски",
 		"settings.style.men": "Мъжки",
 		"settings.howItWorks": "Как работи",
+		"settings.summer": "Лятно облекло",
+		"settings.summer.skirt": "Блузка и пола",
+		"settings.summer.shorts": "Блузка и къси панталони",
+		"settings.summer.dress": "Рокля в горещите дни",
+		"settings.summer.hint": "Рокля само в наистина горещите дни (от {temp}); в другите топли дни – блузка и пола.",
+		"hl.dress": "Време за рокля.",
+		"hl.dress.when": "Време за рокля {when}.",
+		"legs.title.dress": "Време за рокля",
+		"legs.detail.dress": "Роклята покрива и краката: нищо друго не трябва.",
 		"settings.appearance": "Облик",
 		"settings.appearance.auto": "Автоматично",
 		"settings.appearance.light": "Светъл",
@@ -4644,93 +4703,93 @@ var ue = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"a11y.skip": "Към съдържанието",
 		"status.dayOver": "Денят почти свърши, ето утре."
 	}
-}, pe = R, me = {
+}, pe = de, me = {
 	en: "en-GB",
 	de: "de-DE",
 	fr: "fr-FR",
 	es: "es-ES",
 	bg: "bg-BG"
-}, z = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1);
-function he(e, t, n = "neutral", r = !1) {
-	let i = fe[e], a = pe, o = e === "en" && t === "imperial" ? "en-US" : me[e], s = (e) => {
-		let t = n === "neutral" ? void 0 : `${e}@${n}`;
-		return (t && i[t]) ?? i[e] ?? (t && a[t]) ?? a[e] ?? e;
-	}, c = (e) => L(e, n), l = (e, t = {}) => e.replace(/\{(\w+)\}/g, (e, n) => n in t ? String(t[n]) : ""), u = new Intl.PluralRules(o), d = new Intl.ListFormat(o, { type: "conjunction" }), f = t === "imperial" ? "h12" : "h23", p = new Intl.DateTimeFormat(o, {
+}, he = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), z = /* @__PURE__ */ new Set(["legs.title.shorts", "legs.detail.shortsLater"]);
+function ge(e, t, n = "neutral", r = !1, i = "skirt") {
+	let a = fe[e], o = pe, s = e === "en" && t === "imperial" ? "en-US" : me[e], c = (e) => {
+		let t = n === "neutral" || i === "shorts" && z.has(e) ? void 0 : `${e}@${n}`;
+		return (t && a[t]) ?? a[e] ?? (t && o[t]) ?? o[e] ?? e;
+	}, l = (e) => L(e, n, i), u = (e, t = {}) => e.replace(/\{(\w+)\}/g, (e, n) => n in t ? String(t[n]) : ""), d = new Intl.PluralRules(s), f = new Intl.ListFormat(s, { type: "conjunction" }), p = t === "imperial" ? "h12" : "h23", m = new Intl.DateTimeFormat(s, {
 		hour: "numeric",
-		hourCycle: f
-	}), m = new Intl.DateTimeFormat(o, {
+		hourCycle: p
+	}), h = new Intl.DateTimeFormat(s, {
 		hour: "numeric",
 		minute: "2-digit",
-		hourCycle: f
-	}), h = (e) => {
-		let t = `item.${c(e)}`;
-		return r && (i[`${t}@kids`] ?? a[`${t}@kids`]) || s(t);
-	}, g = (t) => e === "de" ? h(t) : h(t).toLocaleLowerCase(o), _ = (e) => `${Math.round(t === "imperial" ? e * 9 / 5 + 32 : e)}°`, v = (e) => t === "imperial" ? `${Math.round(e * .621371)} mph` : `${Math.round(e)} km/h`, y = (e) => t === "imperial" ? `${(e / 25.4).toFixed(2)} in` : `${e < 10 ? e.toFixed(1) : Math.round(e)} mm`, b = (t) => e === "bg" && f === "h12" ? t.replace(/\s?ч\./g, "") : t, x = (e, t) => {
+		hourCycle: p
+	}), g = (e) => {
+		let t = `item.${l(e)}`;
+		return r && (a[`${t}@kids`] ?? o[`${t}@kids`]) || c(t);
+	}, _ = (t) => e === "de" ? g(t) : g(t).toLocaleLowerCase(s), v = (e) => `${Math.round(t === "imperial" ? e * 9 / 5 + 32 : e)}°`, y = (e) => t === "imperial" ? `${Math.round(e * .621371)} mph` : `${Math.round(e)} km/h`, b = (e) => t === "imperial" ? `${(e / 25.4).toFixed(2)} in` : `${e < 10 ? e.toFixed(1) : Math.round(e)} mm`, x = (t) => e === "bg" && p === "h12" ? t.replace(/\s?ч\./g, "") : t, S = (e, t) => {
 		let n = new Date(2e3, 0, 1, e), r = new Date(2e3, 0, 1, Math.min(t, 23), t >= 24 ? 59 : 0);
 		try {
-			return b(p.formatRange(n, r));
+			return x(m.formatRange(n, r));
 		} catch {
-			return b(`${p.format(n)}–${p.format(r)}`);
+			return x(`${m.format(n)}–${m.format(r)}`);
 		}
-	}, S = (e, t) => b(m.format(new Date(2e3, 0, 1, e, t))), C = (e) => d.format(e), w = (e, t) => `${e} ${s(`noun.${t}.${u.select(e) === "one" ? "one" : "other"}`)}`, T = (e) => w(e, "layers"), E = (e, t) => t ? s("when.all") : C(e.map((e) => s(`when.${e}`))), D = (e) => {
+	}, C = (e, t) => x(h.format(new Date(2e3, 0, 1, e, t))), w = (e) => f.format(e), T = (e, t) => `${e} ${c(`noun.${t}.${d.select(e) === "one" ? "one" : "other"}`)}`, E = (e) => T(e, "layers"), D = (e, t) => t ? c("when.all") : w(e.map((e) => c(`when.${e}`))), O = (e) => {
 		if (typeof e == "string" || typeof e == "number") return String(e);
 		switch (e.kind) {
-			case "parts": return E(e.parts, e.all);
-			case "window": return x(e.from, e.to);
-			case "items": return C(e.items.map(g));
-			case "item": return g(e.item);
-			case "word": return s(`word.${e.word}`);
-			case "temp": return _(e.value);
-			case "speed": return v(e.value);
+			case "parts": return D(e.parts, e.all);
+			case "window": return S(e.from, e.to);
+			case "items": return w(e.items.map(_));
+			case "item": return _(e.item);
+			case "word": return c(`word.${e.word}`);
+			case "temp": return v(e.value);
+			case "speed": return y(e.value);
 		}
-	}, O = (e, t = {}) => {
-		let n = e.params ?? {}, r = s(e.key).replace(/\{(\w+)(?:\|(\w+))?\}/g, (e, t, r) => {
+	}, k = (e, t = {}) => {
+		let n = e.params ?? {}, r = c(e.key).replace(/\{(\w+)(?:\|(\w+))?\}/g, (e, t, r) => {
 			let i = n[t];
-			return i === void 0 ? "" : r && typeof i == "number" ? w(i, r) : D(i);
+			return i === void 0 ? "" : r && typeof i == "number" ? T(i, r) : O(i);
 		});
-		return t.capitalize === !1 ? r : z(r, o);
+		return t.capitalize === !1 ? r : he(r, s);
 	};
 	return {
 		lang: e,
-		locale: o,
+		locale: s,
 		units: t,
 		style: n,
-		kind: c,
-		t: (e, t) => l(s(e), t),
-		msg: O,
-		msgs: (e) => e.map((e) => O(e)).join(" "),
-		item: h,
-		itemText: g,
-		itemLabel: (e) => e.labelKey ? s(e.labelKey) : h(e.kind),
+		kind: l,
+		t: (e, t) => u(c(e), t),
+		msg: k,
+		msgs: (e) => e.map((e) => k(e)).join(" "),
+		item: g,
+		itemText: _,
+		itemLabel: (e) => e.labelKey ? c(e.labelKey) : g(e.kind),
 		note: (e) => {
 			switch (e.kind) {
-				case "parts": return e.parts.map((e) => s(`short.${e}`)).join(" + ");
-				case "window": return x(e.from, e.to);
-				case "swapped": return s("note.swapped");
-				case "tooWindy": return s("note.tooWindy");
-				case "storm": return s("note.storm");
-				case "takeOff": return s("note.takeOff");
-				case "putOn": return s("note.putOn");
+				case "parts": return e.parts.map((e) => c(`short.${e}`)).join(" + ");
+				case "window": return S(e.from, e.to);
+				case "swapped": return c("note.swapped");
+				case "tooWindy": return c("note.tooWindy");
+				case "storm": return c("note.storm");
+				case "takeOff": return c("note.takeOff");
+				case "putOn": return c("note.putOn");
 				case "apply":
 				case "reapply":
 				case "applyOnce":
-				case "applied": return s(`note.${e.kind}`);
+				case "applied": return c(`note.${e.kind}`);
 			}
 		},
-		temp: _,
-		speed: v,
-		amount: y,
-		hours: x,
-		time: S,
-		list: C,
-		layers: T,
-		part: (e) => s(`part.${e}`),
-		uvLevel: (e) => s(e < 3 ? "uv.low" : e < 6 ? "uv.moderate" : e < 8 ? "uv.high" : e < 11 ? "uv.veryHigh" : "uv.extreme")
+		temp: v,
+		speed: y,
+		amount: b,
+		hours: S,
+		time: C,
+		list: w,
+		layers: E,
+		part: (e) => c(`part.${e}`),
+		uvLevel: (e) => c(e < 3 ? "uv.low" : e < 6 ? "uv.moderate" : e < 8 ? "uv.high" : e < 11 ? "uv.veryHigh" : "uv.extreme")
 	};
 }
 //#endregion
 //#region src/i18n/bag.ts
-function ge(e, t) {
+function _e(e, t) {
 	let n = [];
 	for (let t of e) {
 		if (t.allDay) {
@@ -4784,18 +4843,18 @@ function ge(e, t) {
 	}).format(r);
 	return i.charAt(0).toLocaleUpperCase(t.locale) + i.slice(1);
 }
-function _e(e) {
+function ve(e) {
 	return e.bag.filter((t) => !e.out.includes(t.kind) && !e.in.includes(t.kind));
 }
 function B(e, t) {
 	let n = (e) => t.list(e.map((e) => t.itemText(e))), r = [];
 	e.out.length > 0 && r.push(t.t("bag.sayOut", { items: n(e.out) })), e.in.length > 0 && r.push(t.t("bag.sayIn", { items: n(e.in) }));
-	let i = _e(e);
+	let i = ve(e);
 	return i.length > 0 && r.push(t.t("bag.sayStay", { items: n(i.map((e) => e.kind)) })), r.join(". ");
 }
 //#endregion
 //#region src/api/openMeteo.ts
-var V = "https://api.open-meteo.com/v1/forecast", ve = "https://air-quality-api.open-meteo.com/v1/air-quality", H = [
+var V = "https://api.open-meteo.com/v1/forecast", ye = "https://air-quality-api.open-meteo.com/v1/air-quality", H = [
 	"temperature_2m",
 	"apparent_temperature",
 	"precipitation_probability",
@@ -4813,7 +4872,7 @@ var V = "https://api.open-meteo.com/v1/forecast", ve = "https://air-quality-api.
 async function U(e, t, n) {
 	let i = /* @__PURE__ */ new Map();
 	try {
-		let a = Object.keys(r), o = new URL(ve);
+		let a = Object.keys(r), o = new URL(ye);
 		o.searchParams.set("latitude", e.toFixed(4)), o.searchParams.set("longitude", t.toFixed(4)), o.searchParams.set("hourly", [
 			"european_aqi_pm2_5",
 			"european_aqi_pm10",
@@ -4842,12 +4901,12 @@ async function W(e, t, n) {
 	if (!i.ok) throw Error(`Forecast request failed (${i.status})`);
 	return q(await i.json(), a);
 }
-var G = (e) => typeof e == "number" && Number.isFinite(e) ? e : 0, ye = (e) => Number(e.slice(11, 13)), K = (e) => e.slice(11, 16);
+var G = (e) => typeof e == "number" && Number.isFinite(e) ? e : 0, be = (e) => Number(e.slice(11, 13)), K = (e) => e.slice(11, 16);
 function q(e, t) {
 	let n = /* @__PURE__ */ new Map();
 	e.hourly.time.forEach((r, i) => {
 		let a = r.slice(0, 10), o = e.hourly, s = {
-			hour: ye(r),
+			hour: be(r),
 			temp: G(o.temperature_2m[i]),
 			feels: G(o.apparent_temperature[i]),
 			precipProb: G(o.precipitation_probability[i]),
@@ -5235,7 +5294,7 @@ function Z(e) {
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/toPrimitive.js
-function be(e, t) {
+function xe(e, t) {
 	if (Z(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
@@ -5247,14 +5306,14 @@ function be(e, t) {
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/toPropertyKey.js
-function xe(e) {
-	var t = be(e, "string");
+function Se(e) {
+	var t = xe(e, "string");
 	return Z(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/defineProperty.js
 function Q(e, t, n) {
-	return (t = xe(t)) in e ? Object.defineProperty(e, t, {
+	return (t = Se(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -5263,7 +5322,7 @@ function Q(e, t, n) {
 }
 //#endregion
 //#region card/src/editor.ts
-var Se = class extends HTMLElement {
+var Ce = class extends HTMLElement {
 	constructor(...e) {
 		super(...e), Q(this, "config", {}), Q(this, "hassNow", void 0), Q(this, "form", void 0);
 	}
@@ -5283,7 +5342,7 @@ var Se = class extends HTMLElement {
 				composed: !0
 			}));
 		}), this.appendChild(this.form));
-		let e = (this.hassNow?.locale?.language ?? this.hassNow?.language ?? "en").slice(0, 2), t = he(de.some((t) => t.id === e) ? e : "en", "metric"), n = {
+		let e = (this.hassNow?.locale?.language ?? this.hassNow?.language ?? "en").slice(0, 2), t = ge(ue.some((t) => t.id === e) ? e : "en", "metric"), n = {
 			entity: "Place (zone, person or device tracker)",
 			name: "Name on the card",
 			mode: t.t("mode.label"),
@@ -5292,6 +5351,7 @@ var Se = class extends HTMLElement {
 			units: t.t("settings.units"),
 			sensitivity: t.t("settings.feel"),
 			style: t.t("settings.style"),
+			summer: t.t("settings.summer"),
 			eyes: t.t("settings.eyes"),
 			allergies: t.t("settings.allergies")
 		}, r = (e) => ({ select: {
@@ -5327,7 +5387,7 @@ var Se = class extends HTMLElement {
 			},
 			{
 				name: "language",
-				selector: r(de.map((e) => [e.id, e.name]))
+				selector: r(ue.map((e) => [e.id, e.name]))
 			},
 			{
 				name: "units",
@@ -5346,6 +5406,14 @@ var Se = class extends HTMLElement {
 				selector: r([["women", t.t("settings.style.women")], ["men", t.t("settings.style.men")]])
 			},
 			{
+				name: "summer",
+				selector: r([
+					"skirt",
+					"shorts",
+					"dress"
+				].map((e) => [e, t.t(`settings.summer.${e}`)]))
+			},
+			{
 				name: "eyes",
 				selector: r([
 					"brown",
@@ -5361,29 +5429,29 @@ var Se = class extends HTMLElement {
 		];
 	}
 };
-customElements.get("layers-weather-card-editor") || customElements.define("layers-weather-card-editor", Se);
+customElements.get("layers-weather-card-editor") || customElements.define("layers-weather-card-editor", Ce);
 //#endregion
 //#region card/src/layers-weather-card.ts
-var Ce = "0.1.1", we = [
+var we = "0.1.2", Te = [
 	"en",
 	"de",
 	"fr",
 	"es",
 	"bg"
-], Te = 18e5, Ee = 3e5, De = (e) => `layers-weather-card:mode:${e.entity ?? "zone.home"}`, Oe = (e) => Math.round(e * 100) / 100, $ = (e) => e.replace(/[&<>"']/g, (e) => ({
+], Ee = 18e5, De = 3e5, Oe = (e) => `layers-weather-card:mode:${e.entity ?? "zone.home"}`, ke = (e) => Math.round(e * 100) / 100, $ = (e) => e.replace(/[&<>"']/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;",
 	"'": "&#39;"
-})[e]), ke = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), Ae = (e) => e.replace(/\s*\(.*\)\s*$/, ""), je = class extends HTMLElement {
+})[e]), Ae = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), je = (e) => e.replace(/\s*\(.*\)\s*$/, ""), Me = class extends HTMLElement {
 	constructor() {
 		super(), Q(this, "config", { type: "custom:layers-weather-card" }), Q(this, "hassNow", void 0), Q(this, "forecast", void 0), Q(this, "fetchedFor", ""), Q(this, "fetchedAt", 0), Q(this, "loading", !1), Q(this, "failed", !1), Q(this, "mode", "everyone"), Q(this, "timer", void 0), Q(this, "drawn", ""), Q(this, "root", void 0), this.root = this.attachShadow({ mode: "open" }), this.root.addEventListener("click", (e) => {
 			let t = e.target.closest("[data-mode]");
 			if (t) {
 				this.mode = t.dataset.mode === "kids" ? "kids" : "everyone";
 				try {
-					localStorage.setItem(De(this.config), this.mode);
+					localStorage.setItem(Oe(this.config), this.mode);
 				} catch {}
 				this.render();
 			}
@@ -5394,7 +5462,7 @@ var Ce = "0.1.1", we = [
 		this.config = e;
 		let t = null;
 		try {
-			t = e.show_mode_switch === !1 ? null : localStorage.getItem(De(e));
+			t = e.show_mode_switch === !1 ? null : localStorage.getItem(Oe(e));
 		} catch {
 			t = null;
 		}
@@ -5422,7 +5490,7 @@ var Ce = "0.1.1", we = [
 		};
 	}
 	static async getConfigElement() {
-		return await Re(), document.createElement("layers-weather-card-editor");
+		return await ze(), document.createElement("layers-weather-card-editor");
 	}
 	static getStubConfig() {
 		return { entity: "zone.home" };
@@ -5434,17 +5502,18 @@ var Ce = "0.1.1", we = [
 		if (typeof n != "number" || typeof r != "number") return null;
 		let i = this.config.name ?? e.config?.location_name ?? (typeof t.friendly_name == "string" ? t.friendly_name : "");
 		return {
-			lat: Oe(n),
-			lon: Oe(r),
+			lat: ke(n),
+			lon: ke(r),
 			name: i
 		};
 	}
 	settings() {
 		let e = this.hassNow, t = (this.config.language ?? e?.locale?.language ?? e?.language ?? "en").slice(0, 2).toLowerCase();
 		return {
-			lang: we.includes(t) ? t : "en",
+			lang: Te.includes(t) ? t : "en",
 			units: this.config.units ?? (e?.config?.unit_system?.temperature === "°F" ? "imperial" : "metric"),
 			style: this.config.style === "women" ? "girl" : this.config.style === "men" ? "boy" : "neutral",
+			summer: this.config.summer ?? "skirt",
 			sensitivity: this.config.sensitivity ?? "normal",
 			eyes: this.config.eyes,
 			allergies: this.config.allergies ?? !1
@@ -5454,7 +5523,7 @@ var Ce = "0.1.1", we = [
 		let e = this.place();
 		if (!e || this.loading) return;
 		let t = `${e.lat},${e.lon}`, n = Date.now() - this.fetchedAt;
-		t === this.fetchedFor && n < (this.failed ? Ee : Te) || (this.loading = !0, W(e.lat, e.lon).then((e) => {
+		t === this.fetchedFor && n < (this.failed ? De : Ee) || (this.loading = !0, W(e.lat, e.lon).then((e) => {
 			this.forecast = e, this.failed = !1;
 		}).catch(() => {
 			this.failed = !0;
@@ -5475,15 +5544,16 @@ var Ce = "0.1.1", we = [
 		]);
 		if (!e && n === this.drawn) return;
 		this.drawn = n;
-		let r = he(t.lang, t.units, t.style, this.mode === "kids"), i = this.place(), a = this.forecast, o = a ? ce(a.timezone, Date.now(), a.now) : null, s = a && o && i ? P(a.days, o, {
+		let r = ge(t.lang, t.units, t.style, this.mode === "kids", t.summer), i = this.place(), a = this.forecast, o = a ? P(a.timezone, Date.now(), a.now) : null, s = a && o && i ? ce(a.days, o, {
 			sensitivity: t.sensitivity,
 			latitude: i.lat,
 			forKids: this.mode === "kids",
 			allergies: t.allergies,
-			eyes: t.eyes
-		}) : null, c = o && s ? le(o, s) : "today", l = s ? c === "today" ? s.today ?? s.tomorrow : s.tomorrow : null, u = !!this.hassNow?.themes?.darkMode, d;
-		d = i ? !l || !o ? `<p class="note">${$(r.t(this.failed ? "status.error" : "status.loading"))}</p>` : this.mode === "kids" ? Le(l, r) : Ie(l, r) : `<p class="note">${$("Set a place: a zone, person or device tracker with a position (default: zone.home).")}</p>`;
-		let f = i ? Me(i.name, c, o, r) : "", p = this.config.show_mode_switch === !1 ? "" : Ne(this.mode, r);
+			eyes: t.eyes,
+			dress: t.style === "girl" && t.summer === "dress"
+		}) : null, c = o && s ? I(o, s) : "today", l = s ? c === "today" ? s.today ?? s.tomorrow : s.tomorrow : null, u = !!this.hassNow?.themes?.darkMode, d;
+		d = i ? !l || !o ? `<p class="note">${$(r.t(this.failed ? "status.error" : "status.loading"))}</p>` : this.mode === "kids" ? Re(l, r) : Le(l, r) : `<p class="note">${$("Set a place: a zone, person or device tracker with a position (default: zone.home).")}</p>`;
+		let f = i ? Ne(i.name, c, o, r) : "", p = this.config.show_mode_switch === !1 ? "" : Pe(this.mode, r);
 		this.root.innerHTML = `<style>${X}</style>
       <ha-card class="lw${u ? " lw--dark" : ""}${this.mode === "kids" ? " lw--kids" : ""}">
         <div class="lw__top">${f}${p}</div>
@@ -5492,26 +5562,26 @@ var Ce = "0.1.1", we = [
       </ha-card>`;
 	}
 };
-function Me(e, t, n, r) {
+function Ne(e, t, n, r) {
 	let i = n ? r.time(n.hour, n.minute) : "";
 	return `<div class="lw__place">
       <span class="lw__logo">${Y.logo()}</span>
       <span><b>${$(e)}</b><small>${$(r.t(`day.${t}`))}${i ? ` · ${$(i)}` : ""}</small></span>
     </div>`;
 }
-function Ne(e, t) {
-	let n = (n) => `<button type="button" data-mode="${n}" aria-pressed="${e === n}">${$(Ae(t.t(`mode.${n}`)))}</button>`;
+function Pe(e, t) {
+	let n = (n) => `<button type="button" data-mode="${n}" aria-pressed="${e === n}">${$(je(t.t(`mode.${n}`)))}</button>`;
 	return `<div class="lw__switch" role="group" aria-label="${$(t.t("mode.label"))}">${n("everyone")}${n("kids")}</div>`;
 }
-function Pe(e, t) {
+function Fe(e, t) {
 	return [...new Map(e.map((e) => [t.kind(e), e])).values()];
 }
-function Fe(e, t) {
+function Ie(e, t) {
 	return `<li class="lw__tile"><span class="lw__box">${Y.clothing(t.kind(e))}</span><span>${$(t.item(e))}</span></li>`;
 }
-function Ie(e, t) {
-	let n = e.views[0], r = n?.part ?? e.parts[0].part, i = Pe((e.kids.find((e) => e.part === r)?.wear ?? []).filter((e) => e !== "socksEveryday"), t), a = e.chips.map((e) => `<li class="lw__chip">${Y.ui(e.icon)}${$(t.msg(e.msg))}</li>`).join(""), o = e.strip.map((e) => `<li class="lw__part${e.past ? " lw__part--past" : ""}${e.part === r ? " lw__part--on" : ""}">
-        <span>${$(t.part(e.part))}</span>${Y.weather(e.icon)}<b>${$(t.layers(e.layers))}</b><small>${$(t.temp(e.feels))}</small></li>`).join(""), s = n?.bag, c = s ? s.leaving ? ge(s.bag, t) : B(s, t) : "", l = s ? Pe(s.bag.map((e) => e.kind), t).map((e) => `<span class="lw__mini">${Y.clothing(t.kind(e))}</span>`).join("") : "";
+function Le(e, t) {
+	let n = e.views[0], r = n?.part ?? e.parts[0].part, i = Fe((e.kids.find((e) => e.part === r)?.wear ?? []).filter((e) => e !== "socksEveryday"), t), a = e.chips.map((e) => `<li class="lw__chip">${Y.ui(e.icon)}${$(t.msg(e.msg))}</li>`).join(""), o = e.strip.map((e) => `<li class="lw__part${e.past ? " lw__part--past" : ""}${e.part === r ? " lw__part--on" : ""}">
+        <span>${$(t.part(e.part))}</span>${Y.weather(e.icon)}<b>${$(t.layers(e.layers))}</b><small>${$(t.temp(e.feels))}</small></li>`).join(""), s = n?.bag, c = s ? s.leaving ? _e(s.bag, t) : B(s, t) : "", l = s ? Fe(s.bag.map((e) => e.kind), t).map((e) => `<span class="lw__mini">${Y.clothing(t.kind(e))}</span>`).join("") : "";
 	return `<div class="lw__main">
       <section class="lw__lead">
         <h2 class="lw__headline">${$(t.msgs(e.headline))}</h2>
@@ -5528,23 +5598,23 @@ function Ie(e, t) {
 			all: !1
 		} }
 	}))}</h3>
-        <ul class="lw__tiles">${i.map((e) => Fe(e, t)).join("")}</ul>
+        <ul class="lw__tiles">${i.map((e) => Ie(e, t)).join("")}</ul>
         ${c ? `<p class="lw__bag"><span class="lw__bag-icon">${Y.ui("backpack")}</span><span><b>${$(t.t("bring.title"))}:</b> ${$(c)}</span><span class="lw__bag-items">${l}</span></p>` : ""}
       </section>
     </div>`;
 }
-function Le(e, t) {
-	let n = e.kids[0], r = e.parts.find((e) => e.part === n.part)?.conditions ?? e.parts[0].conditions, i = ke(t.t(`word.${r.word}`), t.locale), a = Pe(n.wear, t), o = Pe(n.bag.leaving ? n.bag.bag.map((e) => e.kind) : n.bag.out, t);
+function Re(e, t) {
+	let n = e.kids[0], r = e.parts.find((e) => e.part === n.part)?.conditions ?? e.parts[0].conditions, i = Ae(t.t(`word.${r.word}`), t.locale), a = Fe(n.wear, t), o = Fe(n.bag.leaving ? n.bag.bag.map((e) => e.kind) : n.bag.out, t);
 	return `<div class="lw__kids">
       <section class="lw__scene">
-        <span class="lw__scene-art">${Y.weather(r.icon)}<span class="lw__face">${Y.face(ue(r.word))}</span></span>
+        <span class="lw__scene-art">${Y.weather(r.icon)}<span class="lw__face">${Y.face(R(r.word))}</span></span>
         <span><span class="lw__word">${$(i)}</span><span class="lw__temp">${$(t.temp(r.tempAvg))}</span><small>${$(t.part(n.part))}</small></span>
       </section>
-      <ul class="lw__tiles lw__tiles--kids">${a.map((e) => Fe(e, t)).join("")}</ul>
-      ${o.length ? `<h3 class="lw__label">${Y.ui("backpack")} ${$(t.t("kids.bag"))}</h3><ul class="lw__tiles lw__tiles--bag">${o.map((e) => Fe(e, t)).join("")}</ul>` : ""}
+      <ul class="lw__tiles lw__tiles--kids">${a.map((e) => Ie(e, t)).join("")}</ul>
+      ${o.length ? `<h3 class="lw__label">${Y.ui("backpack")} ${$(t.t("kids.bag"))}</h3><ul class="lw__tiles lw__tiles--bag">${o.map((e) => Ie(e, t)).join("")}</ul>` : ""}
     </div>`;
 }
-async function Re() {
+async function ze() {
 	if (customElements.get("ha-form")) return;
 	let e = window;
 	try {
@@ -5554,14 +5624,14 @@ async function Re() {
 		}))?.constructor.getConfigElement?.();
 	} catch {}
 }
-customElements.get("layers-weather-card") || customElements.define("layers-weather-card", je);
-var ze = window;
-ze.customCards = ze.customCards ?? [], ze.customCards.some((e) => e.type === "layers-weather-card") || ze.customCards.push({
+customElements.get("layers-weather-card") || customElements.define("layers-weather-card", Me);
+var Be = window;
+Be.customCards = Be.customCards ?? [], Be.customCards.some((e) => e.type === "layers-weather-card") || Be.customCards.push({
 	type: "layers-weather-card",
 	name: "Layers Weather",
 	description: "What to wear for the weather today: layers, shoes, hat, umbrella and what to take. For grown-ups and kids.",
 	preview: !0,
 	documentationURL: "https://github.com/eybox/layers-weather-card"
-}), console.info(`%c LAYERS-WEATHER-CARD %c ${Ce} `, "background:#6031b0;color:#fff;border-radius:4px 0 0 4px", "background:#fcb679;color:#291d18;border-radius:0 4px 4px 0");
+}), console.info(`%c LAYERS-WEATHER-CARD %c ${we} `, "background:#6031b0;color:#fff;border-radius:4px 0 0 4px", "background:#fcb679;color:#291d18;border-radius:0 4px 4px 0");
 //#endregion
-export { Ce as CARD_VERSION };
+export { we as CARD_VERSION };
