@@ -365,8 +365,8 @@ function k(r, i) {
 		"sneakers",
 		"rainboots",
 		"snowboots"
-	], ae = S.reduce((e, t) => k.indexOf(t.shoes) > k.indexOf(e) ? t.shoes : e, "sandals"), oe = S.some((e) => e.legs.includes("trousers")), se = S.some((e) => e.legs.includes("thermals")), ce = Math.min(...S.map((e) => e.conditions.effective)), le = m(ae, ce, S.some((e) => e.legs.includes("snowpants")) && ce <= n.snowPantsAt);
-	for (let e of S) e.shoes = ae, e.socks = le, oe && (e.legs = e.legs.map((e) => e === "shorts" ? "trousers" : e)), se && !e.legs.includes("thermals") && (e.legs = ["thermals", ...e.legs]), le || (e.extras = e.extras.filter((e) => e !== "socks"));
+	], re = S.reduce((e, t) => k.indexOf(t.shoes) > k.indexOf(e) ? t.shoes : e, "sandals"), ie = S.some((e) => e.legs.includes("trousers")), ae = S.some((e) => e.legs.includes("thermals")), ce = Math.min(...S.map((e) => e.conditions.effective)), le = m(re, ce, S.some((e) => e.legs.includes("snowpants")) && ce <= n.snowPantsAt);
+	for (let e of S) e.shoes = re, e.socks = le, ie && (e.legs = e.legs.map((e) => e === "shorts" ? "trousers" : e)), ae && !e.legs.includes("thermals") && (e.legs = ["thermals", ...e.legs]), le || (e.extras = e.extras.filter((e) => e !== "socks"));
 	if (S.some((e) => e.layers[0] === "tshirt") && S.forEach((e, t) => {
 		if (e.layers[0] !== "longsleeve") return;
 		if (e.layers.length === 2 && T.includes(e.layers[1])) {
@@ -388,64 +388,64 @@ function k(r, i) {
 	if (i.dress && ue && S.every((e) => e.layers[0] === "tshirt" && e.legs.length === 1 && e.legs[0] === "shorts")) for (let e of S) e.layers = ["dress", ...e.layers.slice(1)], e.legs = [];
 	if (S.some((e) => e.head === "beanie")) for (let e of S) (e.head === "sunhat" || e.head === "cap") && (e.head = null);
 	if (S.some((e) => e.head === "cap")) for (let e of S) e.head === "sunhat" && (e.head = "cap");
-	let j = u !== !1, fe = S.map((e) => e.extras.includes("sunscreen")), M = fe.indexOf(!0), pe = !j && M > 0;
-	if (pe) {
+	let j = u !== !1, de = S.map((e) => e.extras.includes("sunscreen")), M = de.indexOf(!0), fe = !j && M > 0;
+	if (fe) {
 		let e = S[0].extras.findIndex((e) => e === "water" || e === "reflector");
 		S[0].extras.splice(e < 0 ? S[0].extras.length : e, 0, "sunscreen");
 	}
 	let me = (e) => {
 		if (S[e].extras.includes("sunscreen")) return j ? { kind: e === M ? "apply" : "reapply" } : { kind: e === 0 ? "applyOnce" : "applied" };
-	}, N = l ? ie(r, a) : null, P = A(S, C, N, !!d);
+	}, N = l ? se(r, a) : null, P = A(S, C, N, !!d, !!f);
 	ne(P, M < 0 ? void 0 : { kind: j ? "reapply" : "applyOnce" }), te(P);
-	let he = Math.max(...S.map((e) => e.conditions.gustMax)), F = S.some((e) => e.conditions.windy), I = S.some((e) => e.conditions.snow), ge = S.some((e) => e.umbrella), _e = S.some((e) => e.hood), ve = S.some((e) => e.conditions.storm), ye = S.some((e) => e.conditions.icy), be = Math.max(...S.map((e) => e.conditions.uvMax)), xe = S.find((e) => e.head === "sunhat" || e.head === "cap")?.head, L = S.some((e) => e.extras.includes("sunscreen")), Se = S.some((e) => e.extras.includes("sunglasses")), Ce = xe ? `hl.${xe === "cap" ? L ? "sun.cap" : "cap" : L ? "sun" : "sunhat"}` : L ? "hl.sunscreen" : Se ? "hl.sunglasses" : null, we = S.map((e) => e.layers.length), R = S[0], z = R.layers.length, Te = we.some((e) => e !== z), B;
-	B = z >= 4 ? "hl.bundle" : z === 3 ? "hl.wrap" : z === 2 ? "hl.layer" : R.layers[0] === "tshirt" ? "hl.tshirt" : R.layers[0] === "dress" ? "hl.dress" : "hl.light";
-	let V = [Te ? {
-		key: `${B}.when`,
-		params: { when: y([R.part], C) }
-	} : { key: B }];
-	ve ? V.push({ key: "hl.storm" }) : ye ? V.push({ key: "hl.icy" }) : _e && !I ? V.push({ key: "hl.rainjacket" }) : ge ? V.push({ key: "hl.umbrella" }) : I ? V.push({ key: "hl.snow" }) : Ce ? V.push({ key: Ce }) : F ? V.push({ key: "hl.windy" }) : V.push({ key: "hl.dry" });
-	let H = S.map((e) => e.conditions.word), U = [], Ee = H.slice(1).find((e) => e !== H[0]);
-	Ee ? U.push({
+	let he = Math.max(...S.map((e) => e.conditions.gustMax)), ge = S.some((e) => e.conditions.windy), F = S.some((e) => e.conditions.snow), _e = S.some((e) => e.umbrella), ve = S.some((e) => e.hood), I = S.some((e) => e.conditions.storm), ye = S.some((e) => e.conditions.icy), be = Math.max(...S.map((e) => e.conditions.uvMax)), xe = S.find((e) => e.head === "sunhat" || e.head === "cap")?.head, Se = S.some((e) => e.extras.includes("sunscreen")), Ce = S.some((e) => e.extras.includes("sunglasses")), we = xe ? `hl.${xe === "cap" ? Se ? "sun.cap" : "cap" : Se ? "sun" : "sunhat"}` : Se ? "hl.sunscreen" : Ce ? "hl.sunglasses" : null, Te = S.map((e) => e.layers.length), L = S[0], R = L.layers.length, Ee = Te.some((e) => e !== R), De;
+	De = R >= 4 ? "hl.bundle" : R === 3 ? "hl.wrap" : R === 2 ? "hl.layer" : L.layers[0] === "tshirt" ? "hl.tshirt" : L.layers[0] === "dress" ? "hl.dress" : "hl.light";
+	let z = [Ee ? {
+		key: `${De}.when`,
+		params: { when: y([L.part], C) }
+	} : { key: De }];
+	I ? z.push({ key: "hl.storm" }) : ye ? z.push({ key: "hl.icy" }) : ve && !F ? z.push({ key: "hl.rainjacket" }) : _e ? z.push({ key: "hl.umbrella" }) : F ? z.push({ key: "hl.snow" }) : we ? z.push({ key: we }) : ge ? z.push({ key: "hl.windy" }) : z.push({ key: "hl.dry" });
+	let B = S.map((e) => e.conditions.word), V = [], H = B.slice(1).find((e) => e !== B[0]);
+	H ? V.push({
 		key: "sum.change",
 		params: {
 			from: {
 				kind: "word",
-				word: H[0]
+				word: B[0]
 			},
 			to: {
 				kind: "word",
-				word: Ee
+				word: H
 			}
 		}
-	}) : U.push({
+	}) : V.push({
 		key: "sum.same",
 		params: { word: {
 			kind: "word",
-			word: H[0]
+			word: B[0]
 		} }
-	}), I ? U.push({ key: "sum.snow" }) : N ? U.push({
+	}), F ? V.push({ key: "sum.snow" }) : N ? V.push({
 		key: "sum.rain",
 		params: { window: {
 			kind: "window",
 			...N
 		} }
-	}) : U.push({ key: "sum.dry" }), F && U.push({
+	}) : V.push({ key: "sum.dry" }), ge && V.push({
 		key: "sum.gusts",
 		params: { speed: {
 			kind: "speed",
 			value: he
 		} }
 	});
-	let W = !!f && S.some((e) => e.conditions.pollen !== null && e.conditions.pollen >= 1), G = Math.max(...S.map((e) => e.conditions.feelsMax)), K = [];
-	ve && K.push({ key: W ? "sum.stormPollen" : "sum.storm" }), G >= n.heatExtremeFrom ? K.push({ key: "sum.heatExtreme" }) : G >= n.heatFrom && K.push({ key: "sum.heat" }), U.push(...K);
-	let q = [], J = S.map((e) => e.conditions.feelsMin), Y = Math.min(...J), X = Math.max(...J);
-	if (q.push(Y === X ? {
+	let Oe = !!f && S.some((e) => e.conditions.pollen !== null && e.conditions.pollen >= 1), U = Math.max(...S.map((e) => e.conditions.feelsMax)), W = [];
+	I && W.push({ key: Oe ? "sum.stormPollen" : "sum.storm" }), U >= n.heatExtremeFrom ? W.push({ key: "sum.heatExtreme" }) : U >= n.heatFrom && W.push({ key: "sum.heat" }), V.push(...W);
+	let G = [], K = S.map((e) => e.conditions.feelsMin), q = Math.min(...K), J = Math.max(...K);
+	if (G.push(q === J ? {
 		icon: "temp",
 		msg: {
 			key: "chip.feels",
 			params: { value: {
 				kind: "temp",
-				value: Y
+				value: q
 			} }
 		}
 	} : {
@@ -455,24 +455,24 @@ function k(r, i) {
 			params: {
 				from: {
 					kind: "temp",
-					value: J[0]
+					value: K[0]
 				},
 				to: {
 					kind: "temp",
-					value: J[0] === Y ? X : Y
+					value: K[0] === q ? J : q
 				}
 			}
 		}
-	}), ve && q.push({
+	}), I && G.push({
 		icon: "rain",
 		msg: { key: "chip.storm" }
-	}), ye && q.push({
+	}), ye && G.push({
 		icon: "snow",
 		msg: { key: "chip.icy" }
-	}), I ? q.push({
+	}), F ? G.push({
 		icon: "snow",
 		msg: { key: "chip.snow" }
-	}) : N ? q.push({
+	}) : N ? G.push({
 		icon: "rain",
 		msg: {
 			key: "chip.rain",
@@ -481,12 +481,12 @@ function k(r, i) {
 				...N
 			} }
 		}
-	}) : q.push({
+	}) : G.push({
 		icon: "dry",
 		msg: { key: "chip.dry" }
-	}), F) {
+	}), ge) {
 		let e = S.map((e) => e.conditions.windy), t = S.filter((e) => e.conditions.windy).map((e) => e.part), n = y(t, C), r = !C.single && t.length === C.total, i = t.length > 1 && !r ? e[0] ? e.indexOf(!1) > 0 && e.slice(e.indexOf(!1)).every((e) => !e) ? "chip.windyFirst" : "chip.windyOnOff" : "chip.windyLater" : "chip.windy";
-		q.push({
+		G.push({
 			icon: "wind",
 			msg: i === "chip.windy" ? {
 				key: i,
@@ -494,14 +494,14 @@ function k(r, i) {
 			} : { key: i }
 		});
 	}
-	be >= n.uvProtect && q.push({
+	be >= n.uvProtect && G.push({
 		icon: "sun",
 		msg: {
 			key: "chip.uv",
 			params: { value: Math.round(be) }
 		}
 	});
-	let Z = t.flatMap((e) => {
+	let Y = t.flatMap((e) => {
 		let t = S.find((t) => t.part === e);
 		if (t) return [{
 			outfit: t,
@@ -519,8 +519,8 @@ function k(r, i) {
 			}),
 			past: !0
 		}] : [];
-	}), Q = O(S, N, j), De = Q[0].bag, Oe = Z.map(({ outfit: e, past: t }) => {
-		let n = t ? void 0 : Q.find((t) => t.part === e.part);
+	}), X = O(S, N, j), Z = X[0].bag, ke = Y.map(({ outfit: e, past: t }) => {
+		let n = t ? void 0 : X.find((t) => t.part === e.part);
 		return {
 			part: e.part,
 			icon: e.conditions.icon,
@@ -533,37 +533,37 @@ function k(r, i) {
 				in: n.in.length
 			} : null
 		};
-	}), ke = (e) => {
-		let t = Z.findIndex((t) => t.outfit.part === e.part);
-		if (t <= 0 || Z[t - 1].past) return null;
-		let n = Z[t - 1].outfit, r = E(e), i = E(n);
+	}), Ae = (e) => {
+		let t = Y.findIndex((t) => t.outfit.part === e.part);
+		if (t <= 0 || Y[t - 1].past) return null;
+		let n = Y[t - 1].outfit, r = E(e), i = E(n);
 		return {
 			from: n.part,
 			off: i.filter((e) => !r.includes(e)),
 			on: r.filter((e) => !i.includes(e))
 		};
-	}, Ae = S.map((t, n) => {
-		let [i, o] = e[t.part], s = ke(t), c = t.conditions.rainy && !t.conditions.snow ? ie(r, Math.max(a, i), o) : null, l = () => A([t], {
+	}, je = S.map((t, n) => {
+		let [i, o] = e[t.part], s = Ae(t), c = t.conditions.rainy && !t.conditions.snow ? se(r, Math.max(a, i), o) : null, l = () => A([t], {
 			total: 1,
 			single: !0
-		}, c, !!d), u = l();
-		s && re(u, s);
-		let f = l(), p = n === 0 ? j ? {
+		}, c, !!d, !!f), u = l();
+		s && oe(u, s);
+		let p = l(), m = n === 0 ? j ? {
 			replace: !1,
-			extra: fe.slice(1).some(Boolean) ? { key: "extras.detail.sunCarry" } : void 0
+			extra: de.slice(1).some(Boolean) ? { key: "extras.detail.sunCarry" } : void 0
 		} : {
-			replace: pe,
-			extra: pe ? void 0 : { key: "extras.detail.sunOnce" }
+			replace: fe,
+			extra: fe ? void 0 : { key: "extras.detail.sunOnce" }
 		} : void 0;
-		for (let e of [f, u]) ne(e, me(n), p), te(e);
+		for (let e of [p, u]) ne(e, me(n), m), te(e);
 		return {
 			part: t.part,
-			cards: f,
+			cards: p,
 			cardsWithChanges: u,
 			change: s,
-			bag: Q[n]
+			bag: X[n]
 		};
-	}), je = S.map((e, t) => {
+	}), Me = S.map((e, t) => {
 		let n = e.extras.filter((e) => e !== "poncho" && (!x.includes(e) || ee.includes(e))), r = [
 			...e.legs,
 			...e.layers,
@@ -574,54 +574,54 @@ function k(r, i) {
 			...e.extras.includes("poncho") ? ["poncho"] : [],
 			...n
 		], i = e.conditions.rainy && !e.umbrella && !e.conditions.snow, a = i ? ["umbrella"] : [];
-		for (let n of ke(e)?.off ?? []) !a.includes(n) && !Q[t].in.includes(n) && a.push(n);
+		for (let n of Ae(e)?.off ?? []) !a.includes(n) && !X[t].in.includes(n) && a.push(n);
 		return {
 			part: e.part,
 			wear: r,
 			skip: a,
 			umbrellaTooWindy: i,
 			storm: e.conditions.storm,
-			bag: Q[t]
+			bag: X[t]
 		};
-	}), $ = [
-		...V,
-		...K,
+	}), Ne = [
+		...z,
+		...W,
 		{
 			key: "speech.wear",
 			params: { items: {
 				kind: "items",
-				items: je[0].wear.filter((e) => e !== "umbrella" && e !== "socksEveryday")
+				items: Me[0].wear.filter((e) => e !== "umbrella" && e !== "socksEveryday")
 			} }
 		},
 		...P[0].detail.slice(0, 1),
 		P.find((e) => e.id === "rain").title
 	];
-	De.length > 0 && $.push({
+	Z.length > 0 && Ne.push({
 		key: "speech.bring",
 		params: { items: {
 			kind: "items",
-			items: De.map((e) => e.kind)
+			items: Z.map((e) => e.kind)
 		} }
 	});
-	let Me;
-	return d && (Math.min(...S.map((e) => e.conditions.feelsMin)) <= n.kidsVeryColdAt ? Me = { key: "kids.note.cold" } : Math.max(...S.map((e) => e.conditions.feelsMax)) >= n.heatExtremeFrom && (Me = { key: "kids.note.hot" })), {
+	let Q;
+	return d && (Math.min(...S.map((e) => e.conditions.feelsMin)) <= n.kidsVeryColdAt ? Q = { key: "kids.note.cold" } : Math.max(...S.map((e) => e.conditions.feelsMax)) >= n.heatExtremeFrom && (Q = { key: "kids.note.hot" })), {
 		date: r.date,
 		parts: S,
-		kidsNote: Me,
-		headline: V,
-		summary: U,
-		chips: q,
-		strip: Oe,
+		kidsNote: Q,
+		headline: z,
+		summary: V,
+		chips: G,
+		strip: ke,
 		cards: P,
-		views: Ae,
-		kids: je,
-		numbers: de(r, a),
-		theme: _(R.conditions),
-		speech: $
+		views: je,
+		kids: Me,
+		numbers: pe(r, a),
+		theme: _(L.conditions),
+		speech: Ne
 	};
 }
-function A(e, t, n, r = !1) {
-	let i = {
+function A(e, t, n, r = !1, i = !1) {
+	let a = {
 		parts: e,
 		scope: t,
 		forKids: r,
@@ -630,17 +630,55 @@ function A(e, t, n, r = !1) {
 			kind: "parts",
 			parts: t
 		} : void 0
-	}, a = Math.max(...e.map((e) => e.conditions.gustMax)), o = e.some((e) => e.conditions.breezy), s = e.some((e) => e.conditions.snow), c = e.some((e) => e.umbrella), l = e.some((e) => e.hood), u = Math.max(...e.map((e) => e.conditions.uvMax));
-	return [
-		ae(i, o),
-		oe(i),
-		se(e, n),
-		ce(i, l),
-		le(i, n, a, s, c, l),
-		j(i, o, u)
+	}, o = Math.max(...e.map((e) => e.conditions.gustMax)), s = e.some((e) => e.conditions.breezy), c = e.some((e) => e.conditions.snow), l = e.some((e) => e.umbrella), u = e.some((e) => e.hood), d = Math.max(...e.map((e) => e.conditions.uvMax)), f = [
+		ce(a, s),
+		le(a),
+		ue(e, n),
+		j(a, u),
+		de(a, n, o, c, l, u),
+		fe(a, s, d)
 	];
+	return ae(f, e, i), f;
 }
-function re(e, { on: t, off: n }) {
+var re = {
+	thermals: () => "cold",
+	snowpants: () => "snow",
+	rainpants: () => "rain",
+	rainboots: () => "puddles",
+	snowboots: (e) => e.some((e) => e.conditions.snow) ? "snow" : "icy",
+	beanie: () => "cold",
+	sunhat: () => "sunny",
+	cap: () => "sunny",
+	scarf: () => "cold",
+	neckwarmer: () => "cold",
+	gloves: () => "cold",
+	sunglasses: (e, t) => e.some((e) => e.conditions.snow && e.conditions.cloudAvg < n.sunnyCloud) ? "glare" : t && e.every((e) => e.conditions.cloudAvg >= n.sunnyCloud && e.conditions.uvMax < n.uvProtect) ? "pollen" : "sunny",
+	sunscreen: () => "uv",
+	water: () => "hot",
+	fan: () => "hot",
+	handwarmers: () => "freezing",
+	lipbalm: (e) => e.some((e) => e.conditions.snow) ? "snow" : "windy",
+	repellent: () => "mosquitoes",
+	mask: () => "smog",
+	tissues: () => "pollen",
+	reflector: (e) => e.some((e) => e.conditions.dark) ? "dark" : "fog",
+	socks: () => "downpour"
+}, ie = [
+	"legs",
+	"shoes",
+	"head",
+	"extras"
+];
+function ae(e, t, n) {
+	let r = (e, t) => e.layers.includes(t) || e.legs.includes(t) || e.shoes === t || e.head === t || e.extras.includes(t);
+	for (let i of e) if (ie.includes(i.id)) for (let e of i.items) {
+		let i = re[e.kind];
+		if (!e.active || !i) continue;
+		let a = t.filter((t) => r(t, e.kind)), o = a.length > 0 ? a : t;
+		e.reason = i(o, n), e.kind === "sunscreen" && (e.reasonValue = Math.round(Math.max(...o.map((e) => e.conditions.uvMax))));
+	}
+}
+function oe(e, { on: t, off: n }) {
 	for (let r of e) for (let e of r.items) e.active && t.includes(e.kind) && !e.note && (e.note = { kind: "putOn" }), !e.active && n.includes(e.kind) && (e.note = { kind: "takeOff" });
 	let r = e.find((e) => e.id === "layers");
 	for (let e of n) s.includes(e) && !r.items.some((t) => t.kind === e) && r.items.push({
@@ -649,14 +687,14 @@ function re(e, { on: t, off: n }) {
 		note: { kind: "takeOff" }
 	});
 }
-function ie(e, t, r = 22) {
+function se(e, t, r = 22) {
 	let i = e.hours.filter((e) => e.hour >= Math.max(t, 7) && e.hour < r && (e.precipProb >= n.rainProb || e.precip >= .2 && e.precipProb >= n.rainMmMinProb));
 	return i.length === 0 ? null : {
 		from: i[0].hour,
 		to: i[i.length - 1].hour + 1
 	};
 }
-function ae({ parts: e, scope: n, presentIn: r, partialNote: i }, a) {
+function ce({ parts: e, scope: n, presentIn: r, partialNote: i }, a) {
 	let o = s.filter((t) => e.some((e) => e.layers.includes(t))), c = e.some((e) => e.swappedForRain), l = o.map((t) => {
 		let n = i(r((e) => e.layers.includes(t))), a = n;
 		!n && t === "rainjacket" && c && (a = { kind: "swapped" });
@@ -762,7 +800,7 @@ function ae({ parts: e, scope: n, presentIn: r, partialNote: i }, a) {
 		items: l
 	};
 }
-function oe({ parts: e, scope: t, presentIn: r, partialNote: i }) {
+function le({ parts: e, scope: t, presentIn: r, partialNote: i }) {
 	if (e.every((e) => e.legs.length === 0 && e.layers[0] === "dress")) return {
 		id: "legs",
 		title: { key: "legs.title.dress" },
@@ -810,7 +848,7 @@ function oe({ parts: e, scope: t, presentIn: r, partialNote: i }) {
 		items: d
 	};
 }
-function se(e, t) {
+function ue(e, t) {
 	let n = [
 		"sandals",
 		"sneakers",
@@ -846,7 +884,7 @@ function se(e, t) {
 		items: a
 	};
 }
-function ce({ parts: e, scope: t, presentIn: r, partialNote: i }, a) {
+function j({ parts: e, scope: t, presentIn: r, partialNote: i }, a) {
 	let o = [
 		"sunhat",
 		"cap",
@@ -892,7 +930,7 @@ function ce({ parts: e, scope: t, presentIn: r, partialNote: i }, a) {
 		items: s
 	};
 }
-function le({ parts: e, scope: t, presentIn: n }, r, i, a, o, s) {
+function de({ parts: e, scope: t, presentIn: n }, r, i, a, o, s) {
 	let c = e.find((e) => e.hood), l = c ? c.extras.includes("poncho") ? "poncho" : c.layers[c.layers.length - 1] : "rainjacket", u = r ? {
 		kind: "window",
 		...r
@@ -994,7 +1032,7 @@ function le({ parts: e, scope: t, presentIn: n }, r, i, a, o, s) {
 		items: m
 	};
 }
-var ue = [
+var M = [
 	"reflector",
 	"poncho",
 	"mask",
@@ -1006,14 +1044,14 @@ var ue = [
 	"repellent",
 	"socks"
 ];
-function j({ parts: e, presentIn: t, partialNote: n, forKids: r }, i, a) {
+function fe({ parts: e, presentIn: t, partialNote: n, forKids: r }, i, a) {
 	let o = [
 		r ? "neckwarmer" : "scarf",
 		"gloves",
 		"sunglasses",
 		"sunscreen"
 	];
-	for (let e of ue) t((t) => t.extras.includes(e)).length > 0 && o.push(e);
+	for (let e of M) t((t) => t.extras.includes(e)).length > 0 && o.push(e);
 	let s = o.map((e) => {
 		let r = t((t) => t.extras.includes(e));
 		return {
@@ -1026,7 +1064,7 @@ function j({ parts: e, presentIn: t, partialNote: n, forKids: r }, i, a) {
 		key: "extras.detail.sun",
 		params: { value: Math.round(a) }
 	}) : c.includes("sunglasses") && l.push({ key: c.includes("tissues") ? "extras.detail.pollenGlasses" : "extras.detail.glare" });
-	for (let t of ue) {
+	for (let t of M) {
 		if (!c.includes(t)) continue;
 		let n = t === "socks" ? e[0].socks : null;
 		l.push(n ? {
@@ -1047,7 +1085,7 @@ function j({ parts: e, presentIn: t, partialNote: n, forKids: r }, i, a) {
 		items: s
 	};
 }
-function de(e, t) {
+function pe(e, t) {
 	let n = e.hours.filter((e) => e.hour >= t), r = n.length > 0 ? n : e.hours, i = (e) => r.map(e);
 	return {
 		tempMin: Math.min(...i((e) => e.temp)),
@@ -1063,7 +1101,7 @@ function de(e, t) {
 		sunset: e.sunset
 	};
 }
-function fe(e, t, n) {
+function me(e, t, n) {
 	if (e) try {
 		let n = new Intl.DateTimeFormat("en-CA", {
 			timeZone: e,
@@ -1086,7 +1124,7 @@ function fe(e, t, n) {
 		minute: Number(n.slice(14, 16))
 	} : null;
 }
-function M(e, t, n) {
+function N(e, t, n) {
 	let r = e.find((e) => e.date === t.date);
 	if (!r) return null;
 	let i = e.find((e) => e.date > r.date);
@@ -1098,13 +1136,13 @@ function M(e, t, n) {
 		tomorrow: i ? k(i, n) : null
 	};
 }
-var pe = (e, t) => e.hour * 60 + e.minute >= 1170 && !!t?.tomorrow;
-function me(e, t) {
-	return pe(e, t) || t !== null && t.today === null ? "tomorrow" : "today";
+var P = (e, t) => e.hour * 60 + e.minute >= 1170 && !!t?.tomorrow;
+function he(e, t) {
+	return P(e, t) || t !== null && t.today === null ? "tomorrow" : "today";
 }
 //#endregion
 //#region src/engine/style.ts
-var N = {
+var ge = {
 	girl: {
 		tshirt: "top",
 		sweater: "cardigan",
@@ -1118,10 +1156,10 @@ var N = {
 		sunhat: "cap"
 	}
 };
-function P(e, t, n = "skirt") {
-	return t === "neutral" || t === "girl" && e === "shorts" && n === "shorts" ? e : N[t][e] ?? e;
+function F(e, t, n = "skirt") {
+	return t === "neutral" || t === "girl" && e === "shorts" && n === "shorts" ? e : ge[t][e] ?? e;
 }
-var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e === "hot" ? "hot" : "good", F = [
+var _e = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e === "hot" ? "hot" : "good", ve = [
 	{
 		id: "en",
 		name: "English"
@@ -1194,6 +1232,23 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 	"note.reapply": "reapply",
 	"note.applyOnce": "apply once",
 	"note.inBag": "in the bag",
+	"reason.sunny": "Sunny",
+	"reason.uv": "UV {n}",
+	"reason.glare": "Glare",
+	"reason.pollen": "Pollen",
+	"reason.hot": "Hot",
+	"reason.mosquitoes": "Mosquitoes",
+	"reason.smog": "Smog",
+	"reason.dark": "Dark",
+	"reason.fog": "Fog",
+	"reason.cold": "Cold",
+	"reason.freezing": "Freezing",
+	"reason.windy": "Windy",
+	"reason.snow": "Snow",
+	"reason.icy": "Icy",
+	"reason.rain": "Rain",
+	"reason.puddles": "Puddles",
+	"reason.downpour": "Downpour",
 	"note.applied": "already on",
 	"bag.now": "now",
 	"extras.detail.sunOnce": "Outside summer, once before you go is enough: no need to carry it.",
@@ -1847,15 +1902,15 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 	"settings.title": "Settings",
 	"settings.language": "Language",
 	"settings.units": "Units",
-	"settings.metric": "°C · km/h · 24h",
-	"settings.imperial": "°F · mph · 12h",
+	"settings.metric": "°C\xA0·\xA0km/h\xA0·\xA024h",
+	"settings.imperial": "°F\xA0·\xA0mph\xA0·\xA012h",
 	"settings.feel": "I usually feel…",
 	"settings.feel.cold": "Cold",
 	"settings.feel.normal": "Just right",
 	"settings.feel.hot": "Warm",
 	"settings.commute": "Getting around",
-	"settings.commute.walk": "On foot",
-	"settings.commute.bike": "By bike",
+	"settings.commute.walk": "On\xA0foot",
+	"settings.commute.bike": "By\xA0bike",
 	"settings.commute.car": "Car or transit",
 	"settings.commute.bike.hint": "By bike: dressed 3° warmer, always with a windproof layer.",
 	"settings.commute.car.hint": "Car or transit: dressed 3° lighter, for short walks outside.",
@@ -1909,7 +1964,7 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 	"warn.credit": "Weather warnings: EUMETNET – MeteoAlarm and the national weather services; in the US, the National Weather Service. Region boundaries © EuroGeographics.",
 	"a11y.skip": "Skip to content",
 	"status.dayOver": "Today is almost over, so here is tomorrow."
-}, ge = {
+}, ye = {
 	en: I,
 	de: {
 		"app.tagline": "Zieh dich fürs Wetter an, nicht für die Zahlen.",
@@ -1963,6 +2018,23 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"note.reapply": "nachcremen",
 		"note.applyOnce": "einmal auftragen",
 		"note.inBag": "im Rucksack",
+		"reason.sunny": "Sonnig",
+		"reason.uv": "UV {n}",
+		"reason.glare": "Blendung",
+		"reason.pollen": "Pollen",
+		"reason.hot": "Heiß",
+		"reason.mosquitoes": "Mücken",
+		"reason.smog": "Smog",
+		"reason.dark": "Dunkel",
+		"reason.fog": "Nebel",
+		"reason.cold": "Kalt",
+		"reason.freezing": "Eisig",
+		"reason.windy": "Windig",
+		"reason.snow": "Schnee",
+		"reason.icy": "Glatt",
+		"reason.rain": "Regen",
+		"reason.puddles": "Pfützen",
+		"reason.downpour": "Starkregen",
 		"note.applied": "schon drauf",
 		"bag.now": "jetzt",
 		"extras.detail.sunOnce": "Außerhalb des Sommers reicht einmal vor dem Losgehen: nicht mitnehmen.",
@@ -2617,8 +2689,8 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.feel.normal": "Genau richtig",
 		"settings.feel.hot": "Warm",
 		"settings.commute": "Unterwegs",
-		"settings.commute.walk": "Zu Fuß",
-		"settings.commute.bike": "Mit dem Rad",
+		"settings.commute.walk": "Zu\xA0Fuß",
+		"settings.commute.bike": "Per\xA0Rad",
 		"settings.commute.car": "Auto oder Bus",
 		"settings.commute.bike.hint": "Mit dem Rad: 3° wärmer angezogen, immer mit einer winddichten Schicht.",
 		"settings.commute.car.hint": "Auto oder Bus: 3° leichter angezogen, für kurze Wege draußen.",
@@ -2725,6 +2797,23 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"note.reapply": "à remettre",
 		"note.applyOnce": "une fois",
 		"note.inBag": "dans le sac",
+		"reason.sunny": "Soleil",
+		"reason.uv": "UV {n}",
+		"reason.glare": "Reflets",
+		"reason.pollen": "Pollen",
+		"reason.hot": "Chaud",
+		"reason.mosquitoes": "Moustiques",
+		"reason.smog": "Pollution",
+		"reason.dark": "Sombre",
+		"reason.fog": "Brouillard",
+		"reason.cold": "Froid",
+		"reason.freezing": "Glacial",
+		"reason.windy": "Vent",
+		"reason.snow": "Neige",
+		"reason.icy": "Verglas",
+		"reason.rain": "Pluie",
+		"reason.puddles": "Flaques",
+		"reason.downpour": "Averse",
 		"note.applied": "déjà mise",
 		"bag.now": "maintenant",
 		"extras.detail.sunOnce": "Hors été, une fois avant de partir suffit : inutile de l’emporter.",
@@ -3376,11 +3465,11 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.units": "Unités",
 		"settings.feel": "D'habitude, j'ai…",
 		"settings.feel.cold": "Froid",
-		"settings.feel.normal": "Ni chaud ni froid",
+		"settings.feel.normal": "Normal",
 		"settings.feel.hot": "Chaud",
 		"settings.commute": "Pour te déplacer",
-		"settings.commute.walk": "À pied",
-		"settings.commute.bike": "À vélo",
+		"settings.commute.walk": "À\xA0pied",
+		"settings.commute.bike": "À\xA0vélo",
 		"settings.commute.car": "Voiture ou bus",
 		"settings.commute.bike.hint": "À vélo : habillé 3° plus chaud, toujours avec une couche coupe-vent.",
 		"settings.commute.car.hint": "Voiture ou bus : habillé 3° plus léger, pour de courts trajets dehors.",
@@ -3487,6 +3576,23 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"note.reapply": "repite",
 		"note.applyOnce": "una vez",
 		"note.inBag": "en la mochila",
+		"reason.sunny": "Sol",
+		"reason.uv": "UV {n}",
+		"reason.glare": "Reflejos",
+		"reason.pollen": "Polen",
+		"reason.hot": "Calor",
+		"reason.mosquitoes": "Mosquitos",
+		"reason.smog": "Polución",
+		"reason.dark": "Oscuro",
+		"reason.fog": "Niebla",
+		"reason.cold": "Frío",
+		"reason.freezing": "Helada",
+		"reason.windy": "Viento",
+		"reason.snow": "Nieve",
+		"reason.icy": "Hielo",
+		"reason.rain": "Lluvia",
+		"reason.puddles": "Charcos",
+		"reason.downpour": "Chaparrón",
 		"note.applied": "ya puesto",
 		"bag.now": "ahora",
 		"extras.detail.sunOnce": "Fuera del verano basta una vez antes de salir: no hace falta llevarlo.",
@@ -4141,8 +4247,8 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.feel.normal": "Normal",
 		"settings.feel.hot": "Calor",
 		"settings.commute": "Cómo te mueves",
-		"settings.commute.walk": "A pie",
-		"settings.commute.bike": "En bici",
+		"settings.commute.walk": "A\xA0pie",
+		"settings.commute.bike": "En\xA0bici",
 		"settings.commute.car": "Coche o bus",
 		"settings.commute.bike.hint": "En bici: ropa para 3° menos, siempre con una capa cortavientos.",
 		"settings.commute.car.hint": "Coche o bus: ropa para 3° más, para tramos cortos fuera.",
@@ -4249,6 +4355,23 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"note.reapply": "поднови",
 		"note.applyOnce": "веднъж",
 		"note.inBag": "в раницата",
+		"reason.sunny": "Слънчево",
+		"reason.uv": "UV {n}",
+		"reason.glare": "Отблясъци",
+		"reason.pollen": "Полени",
+		"reason.hot": "Горещо",
+		"reason.mosquitoes": "Комари",
+		"reason.smog": "Смог",
+		"reason.dark": "Тъмно",
+		"reason.fog": "Мъгла",
+		"reason.cold": "Студено",
+		"reason.freezing": "Мразовито",
+		"reason.windy": "Вятър",
+		"reason.snow": "Сняг",
+		"reason.icy": "Заледено",
+		"reason.rain": "Дъжд",
+		"reason.puddles": "Локви",
+		"reason.downpour": "Порой",
 		"note.applied": "вече е сложен",
 		"bag.now": "сега",
 		"extras.detail.sunOnce": "Извън лятото стига веднъж преди излизане: не е нужно да го носиш.",
@@ -4293,7 +4416,7 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"legs.title.dress": "Време за рокля",
 		"legs.detail.dress": "Роклята покрива и краката: нищо друго не трябва.",
 		"settings.appearance": "Облик",
-		"settings.appearance.auto": "Автоматично",
+		"settings.appearance.auto": "Авто",
 		"settings.appearance.light": "Светъл",
 		"settings.appearance.dark": "Тъмен",
 		"card.title.bagged": "{items} в раницата",
@@ -4904,7 +5027,7 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"settings.feel.hot": "Топло",
 		"settings.commute": "Придвижване",
 		"settings.commute.walk": "Пеша",
-		"settings.commute.bike": "С колело",
+		"settings.commute.bike": "С\xA0колело",
 		"settings.commute.car": "Кола, автобус",
 		"settings.commute.bike.hint": "С колело: облечен за 3° по-студено, винаги с ветроустойчив слой.",
 		"settings.commute.car.hint": "Кола или автобус: облечен за 3° по-топло, за кратко навън.",
@@ -4959,18 +5082,18 @@ var he = (e) => e === "freezing" || e === "cold" || e === "chilly" ? "cold" : e 
 		"a11y.skip": "Към съдържанието",
 		"status.dayOver": "Денят почти свърши, ето утре."
 	}
-}, _e = I, ve = {
+}, be = I, xe = {
 	en: "en-GB",
 	de: "de-DE",
 	fr: "fr-FR",
 	es: "es-ES",
 	bg: "bg-BG"
-}, ye = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), be = /* @__PURE__ */ new Set(["legs.title.shorts", "legs.detail.shortsLater"]);
-function xe(e, t, n = "neutral", r = !1, i = "skirt") {
-	let a = ge[e], o = _e, s = e === "en" && t === "imperial" ? "en-US" : ve[e], c = (e) => {
-		let t = n === "neutral" || i === "shorts" && be.has(e) ? void 0 : `${e}@${n}`;
+}, Se = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), Ce = /* @__PURE__ */ new Set(["legs.title.shorts", "legs.detail.shortsLater"]);
+function we(e, t, n = "neutral", r = !1, i = "skirt") {
+	let a = ye[e], o = be, s = e === "en" && t === "imperial" ? "en-US" : xe[e], c = (e) => {
+		let t = n === "neutral" || i === "shorts" && Ce.has(e) ? void 0 : `${e}@${n}`;
 		return (t && a[t]) ?? a[e] ?? (t && o[t]) ?? o[e] ?? e;
-	}, l = (e) => P(e, n, i), u = (e, t = {}) => e.replace(/\{(\w+)\}/g, (e, n) => n in t ? String(t[n]) : ""), d = new Intl.PluralRules(s), f = new Intl.ListFormat(s, { type: "conjunction" }), p = t === "imperial" ? "h12" : "h23", m = new Intl.DateTimeFormat(s, {
+	}, l = (e) => F(e, n, i), u = (e, t = {}) => e.replace(/\{(\w+)\}/g, (e, n) => n in t ? String(t[n]) : ""), d = new Intl.PluralRules(s), f = new Intl.ListFormat(s, { type: "conjunction" }), p = t === "imperial" ? "h12" : "h23", m = new Intl.DateTimeFormat(s, {
 		hour: "numeric",
 		hourCycle: p
 	}), h = new Intl.DateTimeFormat(s, {
@@ -5003,7 +5126,7 @@ function xe(e, t, n = "neutral", r = !1, i = "skirt") {
 			let i = n[t];
 			return i === void 0 ? "" : r && typeof i == "number" ? T(i, r) : D(i);
 		});
-		return t.capitalize === !1 ? r : ye(r, s);
+		return t.capitalize === !1 ? r : Se(r, s);
 	};
 	return {
 		lang: e,
@@ -5017,6 +5140,7 @@ function xe(e, t, n = "neutral", r = !1, i = "skirt") {
 		item: g,
 		itemText: _,
 		itemLabel: (e) => e.labelKey ? c(e.labelKey) : g(e.kind),
+		reason: (e) => e.reason && e.active ? u(c(`reason.${e.reason}`), { n: e.reasonValue ?? "" }).trim() : null,
 		note: (e) => {
 			switch (e.kind) {
 				case "parts": return e.parts.map((e) => c(`short.${e}`)).join(" + ");
@@ -5046,7 +5170,7 @@ function xe(e, t, n = "neutral", r = !1, i = "skirt") {
 }
 //#endregion
 //#region src/i18n/bag.ts
-function L(e, t) {
+function Te(e, t) {
 	let n = [];
 	for (let t of e) {
 		if (t.allDay) {
@@ -5100,18 +5224,18 @@ function L(e, t) {
 	}).format(r);
 	return i.charAt(0).toLocaleUpperCase(t.locale) + i.slice(1);
 }
-function Se(e) {
+function L(e) {
 	return e.bag.filter((t) => !e.out.includes(t.kind) && !e.in.includes(t.kind));
 }
-function Ce(e, t) {
+function R(e, t) {
 	let n = (e) => t.list(e.map((e) => t.itemText(e))), r = [];
 	e.out.length > 0 && r.push(t.t("bag.sayOut", { items: n(e.out) })), e.in.length > 0 && r.push(t.t("bag.sayIn", { items: n(e.in) }));
-	let i = Se(e);
+	let i = L(e);
 	return i.length > 0 && r.push(t.t("bag.sayStay", { items: n(i.map((e) => e.kind)) })), r.join(". ");
 }
 //#endregion
 //#region src/api/openMeteo.ts
-var we = "https://api.open-meteo.com/v1/forecast", R = "https://air-quality-api.open-meteo.com/v1/air-quality", z = [
+var Ee = "https://api.open-meteo.com/v1/forecast", De = "https://air-quality-api.open-meteo.com/v1/air-quality", z = [
 	"temperature_2m",
 	"apparent_temperature",
 	"precipitation_probability",
@@ -5126,10 +5250,10 @@ var we = "https://api.open-meteo.com/v1/forecast", R = "https://air-quality-api.
 	"relative_humidity_2m",
 	"sunshine_duration"
 ];
-async function Te(e, t, n) {
+async function B(e, t, n) {
 	let i = /* @__PURE__ */ new Map();
 	try {
-		let a = Object.keys(r), o = new URL(R);
+		let a = Object.keys(r), o = new URL(De);
 		o.searchParams.set("latitude", e.toFixed(4)), o.searchParams.set("longitude", t.toFixed(4)), o.searchParams.set("hourly", [
 			"european_aqi_pm2_5",
 			"european_aqi_pm10",
@@ -5151,30 +5275,30 @@ async function Te(e, t, n) {
 	}
 	return i;
 }
-async function B(e, t, n) {
-	let r = new URL(we);
+async function V(e, t, n) {
+	let r = new URL(Ee);
 	r.searchParams.set("latitude", e.toFixed(4)), r.searchParams.set("longitude", t.toFixed(4)), r.searchParams.set("hourly", z.join(",")), r.searchParams.set("daily", "sunrise,sunset"), r.searchParams.set("current", "temperature_2m,apparent_temperature,weather_code"), r.searchParams.set("timezone", "auto"), r.searchParams.set("forecast_days", "2");
-	let [i, a] = await Promise.all([fetch(r, { signal: n }), Te(e, t, n)]);
+	let [i, a] = await Promise.all([fetch(r, { signal: n }), B(e, t, n)]);
 	if (!i.ok) throw Error(`Forecast request failed (${i.status})`);
-	return Ee(await i.json(), a);
+	return W(await i.json(), a);
 }
-var V = (e) => typeof e == "number" && Number.isFinite(e) ? e : 0, H = (e) => Number(e.slice(11, 13)), U = (e) => e.slice(11, 16);
-function Ee(e, t) {
+var H = (e) => typeof e == "number" && Number.isFinite(e) ? e : 0, Oe = (e) => Number(e.slice(11, 13)), U = (e) => e.slice(11, 16);
+function W(e, t) {
 	let n = /* @__PURE__ */ new Map();
 	e.hourly.time.forEach((r, i) => {
 		let a = r.slice(0, 10), o = e.hourly, s = {
-			hour: H(r),
-			temp: V(o.temperature_2m[i]),
-			feels: V(o.apparent_temperature[i]),
-			precipProb: V(o.precipitation_probability[i]),
-			precip: V(o.precipitation[i]),
-			snowfall: V(o.snowfall[i]),
-			snowDepth: V(o.snow_depth[i]),
-			wind: V(o.wind_speed_10m[i]),
-			gusts: V(o.wind_gusts_10m[i]),
-			uv: V(o.uv_index[i]),
-			cloud: V(o.cloud_cover[i]),
-			code: V(o.weather_code[i])
+			hour: Oe(r),
+			temp: H(o.temperature_2m[i]),
+			feels: H(o.apparent_temperature[i]),
+			precipProb: H(o.precipitation_probability[i]),
+			precip: H(o.precipitation[i]),
+			snowfall: H(o.snowfall[i]),
+			snowDepth: H(o.snow_depth[i]),
+			wind: H(o.wind_speed_10m[i]),
+			gusts: H(o.wind_gusts_10m[i]),
+			uv: H(o.uv_index[i]),
+			cloud: H(o.cloud_cover[i]),
+			code: H(o.weather_code[i])
 		}, c = o.relative_humidity_2m?.[i];
 		typeof c == "number" && (s.humidity = c);
 		let l = o.sunshine_duration?.[i];
@@ -5199,7 +5323,7 @@ function Ee(e, t) {
 }
 //#endregion
 //#region src/lib/icons.generated.ts
-var W = {
+var G = {
 	clothing: {
 		tshirt: {
 			on: "<svg class=\"art\" viewBox=\"0 0 64 64\" aria-hidden=\"true\" focusable=\"false\"><g fill=\"#FFD1B0\" stroke=\"#3D2C23\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M22 10 L12 14 L5 25 L13 30 L18 25 L18 55 L46 55 L46 25 L51 30 L59 25 L52 14 L42 10 C40 15 36 17 32 17 C28 17 24 15 22 10 Z\"></path></g></svg>",
@@ -5546,47 +5670,47 @@ var W = {
 		afternoon: "<svg class=\"art\" viewBox=\"0 0 40 40\" aria-hidden=\"true\" focusable=\"false\"><g stroke=\"#291D18\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"20\" cy=\"15\" r=\"7\" fill=\"#F5C131\"></circle><path fill=\"none\" d=\"M20 3 V5 M20 25 V27 M8 15 H10 M30 15 H32 M11.5 6.5 L13 8 M27 22 L28.5 23.5 M11.5 23.5 L13 22 M27 8 L28.5 6.5\"></path><path fill=\"none\" d=\"M4 34 H36\"></path></g></svg>",
 		evening: "<svg class=\"art\" viewBox=\"0 0 40 40\" aria-hidden=\"true\" focusable=\"false\"><g stroke=\"#291D18\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M24 6 A12 12 0 1 0 34 24 A9.5 9.5 0 0 1 24 6 Z\" fill=\"#D3DBE3\"></path><path fill=\"none\" d=\"M8 7 V11 M6 9 H10 M31 32 V35 M29.5 33.5 H32.5\"></path></g></svg>"
 	}
-}, G = {
-	clothing: (e, { active: t = !0 } = {}) => W.clothing[e][t ? "on" : "off"],
-	weather: (e) => W.weather[e],
-	face: (e) => W.face[e],
-	ui: (e) => W.ui[e],
-	logo: ({ face: e = !0 } = {}) => W.logo[e ? "face" : "plain"],
-	eye: (e) => W.eye[e],
-	part: (e) => W.part[e]
-}, K = "\n:host {\n  --lw-text: var(--primary-text-color, #1d1b20);\n  --lw-muted: var(--secondary-text-color, #5d5a62);\n  --lw-line: var(--divider-color, rgba(0, 0, 0, 0.12));\n  --lw-tile: var(--secondary-background-color, #f2f0f4);\n  --lw-accent: var(--primary-color, #6031b0);\n  --lw-on-accent: var(--text-primary-color, #ffffff);\n  display: block;\n}\n* { box-sizing: border-box; }\n.lw {\n  container-type: inline-size;\n  padding: 16px;\n  color: var(--lw-text);\n  display: grid;\n  gap: 14px;\n}\nsvg { display: block; width: 100%; height: 100%; }\nul, ol { list-style: none; margin: 0; padding: 0; }\nh2, h3, p { margin: 0; }\n.note { color: var(--lw-muted); font-size: 1rem; }\n\n.lw__top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }\n.lw__place { display: flex; align-items: center; gap: 10px; min-width: 0; }\n.lw__place b { display: block; font-size: 1.125rem; font-weight: 700; line-height: 1.2; }\n.lw__place small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__logo { width: 36px; height: 36px; flex: none; }\n\n.lw__switch { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--lw-tile); }\n.lw__switch button {\n  font: inherit; font-size: 0.875rem; font-weight: 600; border: 0; border-radius: 999px; padding: 6px 14px;\n  background: transparent; color: var(--lw-text); cursor: pointer;\n}\n.lw__switch button[aria-pressed='true'] { background: var(--lw-accent); color: var(--lw-on-accent); }\n.lw__switch button:focus-visible { outline: 2px solid var(--lw-accent); outline-offset: 2px; }\n\n.lw__main { display: grid; gap: 16px; }\n.lw__lead { display: grid; gap: 8px; align-content: start; }\n.lw__headline { font-size: 1.75rem; font-weight: 800; line-height: 1.12; letter-spacing: -0.01em; }\n.lw__summary { color: var(--lw-muted); font-size: 1rem; line-height: 1.4; }\n.lw__chips { display: flex; flex-wrap: wrap; gap: 6px; }\n.lw__chip {\n  display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;\n  background: var(--lw-tile); font-size: 0.875rem; font-weight: 600;\n}\n.lw__chip svg { width: 16px; height: 16px; }\n\n.lw__outfit { display: grid; gap: 10px; align-content: start; }\n.lw__strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }\n.lw__part {\n  display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--lw-tile);\n  font-size: 0.8125rem; text-align: center;\n}\n.lw__part svg { width: 34px; height: 34px; }\n.lw__part b { font-size: 0.875rem; }\n.lw__part small { color: var(--lw-muted); }\n.lw__part--past { opacity: 0.45; }\n.lw__part--on { box-shadow: inset 0 0 0 2px var(--lw-accent); }\n\n.lw__label {\n  display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;\n  text-transform: uppercase; color: var(--lw-muted);\n}\n.lw__label svg { width: 16px; height: 16px; }\n.lw__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 10px 6px; }\n.lw__tile { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: 0.8125rem; font-weight: 600; line-height: 1.2; }\n.lw__box { width: 64px; height: 64px; padding: 8px; border-radius: 16px; background: var(--lw-tile); }\n\n.lw__bag { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.9375rem; line-height: 1.35; }\n.lw__bag-icon { width: 20px; height: 20px; flex: none; color: var(--lw-muted); }\n.lw__bag > span:nth-child(2) { flex: 1 1 200px; }\n.lw__bag-items { display: flex; gap: 4px; }\n.lw__mini { width: 30px; height: 30px; }\n\n/* Kids: one big weather word with its face, and big pictures. */\n.lw__kids { display: grid; gap: 14px; }\n.lw__scene { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 20px; background: var(--lw-tile); }\n.lw__scene-art { position: relative; width: 96px; height: 96px; flex: none; }\n.lw__face { position: absolute; right: -8px; bottom: -8px; width: 46px; height: 46px; }\n.lw__word { display: block; font-size: 2.5rem; font-weight: 800; line-height: 1; }\n.lw__temp { display: block; font-size: 1.375rem; font-weight: 700; color: var(--lw-muted); }\n.lw__scene small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__tiles--kids { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; }\n.lw__tiles--kids .lw__tile { font-size: 1.0625rem; font-weight: 700; }\n.lw__tiles--kids .lw__box { width: 100px; height: 100px; padding: 12px; border-radius: 22px; }\n.lw__tiles--bag .lw__box { width: 72px; height: 72px; }\n\n.lw__credit { font-size: 0.75rem; color: var(--lw-muted); text-align: right; }\n\n/* Dark themes: the pictures keep their colours and get a soft light edge, as in the app. */\n.lw--dark .lw__box svg, .lw--dark .lw__mini svg, .lw--dark .lw__part svg, .lw--dark .lw__scene-art svg, .lw--dark .lw__logo svg {\n  filter: drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.9)) drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.6));\n}\n\n/* A wall tablet: headline left, outfit right; everything a size up. */\n@container (min-width: 640px) {\n  .lw { padding: 20px 24px; }\n  .lw__main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; }\n  .lw__headline { font-size: 2.25rem; }\n  .lw__box { width: 76px; height: 76px; }\n  .lw__tiles { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }\n  .lw__kids { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; }\n  .lw__kids .lw__label, .lw__tiles--bag { grid-column: 2; }\n  .lw__scene { flex-direction: column; align-items: flex-start; grid-row: span 3; }\n  .lw__scene-art { width: 140px; height: 140px; }\n  .lw__face { width: 64px; height: 64px; }\n  .lw__word { font-size: 3.25rem; }\n}\n@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }\n";
+}, K = {
+	clothing: (e, { active: t = !0 } = {}) => G.clothing[e][t ? "on" : "off"],
+	weather: (e) => G.weather[e],
+	face: (e) => G.face[e],
+	ui: (e) => G.ui[e],
+	logo: ({ face: e = !0 } = {}) => G.logo[e ? "face" : "plain"],
+	eye: (e) => G.eye[e],
+	part: (e) => G.part[e]
+}, q = "\n:host {\n  --lw-text: var(--primary-text-color, #1d1b20);\n  --lw-muted: var(--secondary-text-color, #5d5a62);\n  --lw-line: var(--divider-color, rgba(0, 0, 0, 0.12));\n  --lw-tile: var(--secondary-background-color, #f2f0f4);\n  --lw-accent: var(--primary-color, #6031b0);\n  --lw-on-accent: var(--text-primary-color, #ffffff);\n  display: block;\n}\n* { box-sizing: border-box; }\n.lw {\n  container-type: inline-size;\n  padding: 16px;\n  color: var(--lw-text);\n  display: grid;\n  gap: 14px;\n}\nsvg { display: block; width: 100%; height: 100%; }\nul, ol { list-style: none; margin: 0; padding: 0; }\nh2, h3, p { margin: 0; }\n.note { color: var(--lw-muted); font-size: 1rem; }\n\n.lw__top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }\n.lw__place { display: flex; align-items: center; gap: 10px; min-width: 0; }\n.lw__place b { display: block; font-size: 1.125rem; font-weight: 700; line-height: 1.2; }\n.lw__place small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__logo { width: 36px; height: 36px; flex: none; }\n\n.lw__switch { display: inline-flex; padding: 3px; gap: 2px; border-radius: 999px; background: var(--lw-tile); }\n.lw__switch button {\n  font: inherit; font-size: 0.875rem; font-weight: 600; border: 0; border-radius: 999px; padding: 6px 14px;\n  background: transparent; color: var(--lw-text); cursor: pointer;\n}\n.lw__switch button[aria-pressed='true'] { background: var(--lw-accent); color: var(--lw-on-accent); }\n.lw__switch button:focus-visible { outline: 2px solid var(--lw-accent); outline-offset: 2px; }\n\n.lw__main { display: grid; gap: 16px; }\n.lw__lead { display: grid; gap: 8px; align-content: start; }\n.lw__headline { font-size: 1.75rem; font-weight: 800; line-height: 1.12; letter-spacing: -0.01em; }\n.lw__summary { color: var(--lw-muted); font-size: 1rem; line-height: 1.4; }\n.lw__chips { display: flex; flex-wrap: wrap; gap: 6px; }\n.lw__chip {\n  display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;\n  background: var(--lw-tile); font-size: 0.875rem; font-weight: 600;\n}\n.lw__chip svg { width: 16px; height: 16px; }\n\n.lw__outfit { display: grid; gap: 10px; align-content: start; }\n.lw__strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }\n.lw__part {\n  display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; background: var(--lw-tile);\n  font-size: 0.8125rem; text-align: center;\n}\n.lw__part svg { width: 34px; height: 34px; }\n.lw__part b { font-size: 0.875rem; }\n.lw__part small { color: var(--lw-muted); }\n.lw__part--past { opacity: 0.45; }\n.lw__part--on { box-shadow: inset 0 0 0 2px var(--lw-accent); }\n\n.lw__label {\n  display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;\n  text-transform: uppercase; color: var(--lw-muted);\n}\n.lw__label svg { width: 16px; height: 16px; }\n.lw__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 10px 6px; }\n.lw__tile { display: grid; justify-items: center; gap: 4px; text-align: center; font-size: 0.8125rem; font-weight: 600; line-height: 1.2; }\n.lw__box { width: 64px; height: 64px; padding: 8px; border-radius: 16px; background: var(--lw-tile); }\n.lw__reason { display: block; margin-top: 2px; font-size: 0.8125rem; font-weight: 500; color: var(--lw-muted); }\n\n.lw__bag { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.9375rem; line-height: 1.35; }\n.lw__bag-icon { width: 20px; height: 20px; flex: none; color: var(--lw-muted); }\n.lw__bag > span:nth-child(2) { flex: 1 1 200px; }\n.lw__bag-items { display: flex; gap: 4px; }\n.lw__mini { width: 30px; height: 30px; }\n\n/* Kids: one big weather word with its face, and big pictures. */\n.lw__kids { display: grid; gap: 14px; }\n.lw__scene { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 20px; background: var(--lw-tile); }\n.lw__scene-art { position: relative; width: 96px; height: 96px; flex: none; }\n.lw__face { position: absolute; right: -8px; bottom: -8px; width: 46px; height: 46px; }\n.lw__word { display: block; font-size: 2.5rem; font-weight: 800; line-height: 1; }\n.lw__temp { display: block; font-size: 1.375rem; font-weight: 700; color: var(--lw-muted); }\n.lw__scene small { display: block; color: var(--lw-muted); font-size: 0.875rem; }\n.lw__tiles--kids { grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; }\n.lw__tiles--kids .lw__tile { font-size: 1.0625rem; font-weight: 700; }\n.lw__tiles--kids .lw__box { width: 100px; height: 100px; padding: 12px; border-radius: 22px; }\n.lw__tiles--bag .lw__box { width: 72px; height: 72px; }\n\n.lw__credit { font-size: 0.75rem; color: var(--lw-muted); text-align: right; }\n\n/* Dark themes: the pictures keep their colours and get a soft light edge, as in the app. */\n.lw--dark .lw__box svg, .lw--dark .lw__mini svg, .lw--dark .lw__part svg, .lw--dark .lw__scene-art svg, .lw--dark .lw__logo svg {\n  filter: drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.9)) drop-shadow(0 0 0.75px rgba(239, 244, 251, 0.6));\n}\n\n/* A wall tablet: headline left, outfit right; everything a size up. */\n@container (min-width: 640px) {\n  .lw { padding: 20px 24px; }\n  .lw__main { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; }\n  .lw__headline { font-size: 2.25rem; }\n  .lw__box { width: 76px; height: 76px; }\n  .lw__tiles { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }\n  .lw__kids { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; }\n  .lw__kids .lw__label, .lw__tiles--bag { grid-column: 2; }\n  .lw__scene { flex-direction: column; align-items: flex-start; grid-row: span 3; }\n  .lw__scene-art { width: 140px; height: 140px; }\n  .lw__face { width: 64px; height: 64px; }\n  .lw__word { font-size: 3.25rem; }\n}\n@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }\n";
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/typeof.js
-function q(e) {
+function J(e) {
 	"@babel/helpers - typeof";
-	return q = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+	return J = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
 		return typeof e;
 	} : function(e) {
 		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
-	}, q(e);
+	}, J(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/toPrimitive.js
-function J(e, t) {
-	if (q(e) != "object" || !e) return e;
+function Y(e, t) {
+	if (J(e) != "object" || !e) return e;
 	var n = e[Symbol.toPrimitive];
 	if (n !== void 0) {
 		var r = n.call(e, t || "default");
-		if (q(r) != "object") return r;
+		if (J(r) != "object") return r;
 		throw TypeError("@@toPrimitive must return a primitive value.");
 	}
 	return (t === "string" ? String : Number)(e);
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/toPropertyKey.js
-function Y(e) {
-	var t = J(e, "string");
-	return q(t) == "symbol" ? t : t + "";
+function X(e) {
+	var t = Y(e, "string");
+	return J(t) == "symbol" ? t : t + "";
 }
 //#endregion
 //#region \0@oxc-project+runtime@0.151.0/helpers/esm/defineProperty.js
-function X(e, t, n) {
-	return (t = Y(t)) in e ? Object.defineProperty(e, t, {
+function Z(e, t, n) {
+	return (t = X(t)) in e ? Object.defineProperty(e, t, {
 		value: n,
 		enumerable: !0,
 		configurable: !0,
@@ -5595,9 +5719,9 @@ function X(e, t, n) {
 }
 //#endregion
 //#region card/src/editor.ts
-var Z = class extends HTMLElement {
+var ke = class extends HTMLElement {
 	constructor(...e) {
-		super(...e), X(this, "config", {}), X(this, "hassNow", void 0), X(this, "form", void 0);
+		super(...e), Z(this, "config", {}), Z(this, "hassNow", void 0), Z(this, "form", void 0);
 	}
 	setConfig(e) {
 		this.config = e, this.render();
@@ -5615,7 +5739,7 @@ var Z = class extends HTMLElement {
 				composed: !0
 			}));
 		}), this.appendChild(this.form));
-		let e = (this.hassNow?.locale?.language ?? this.hassNow?.language ?? "en").slice(0, 2), t = xe(F.some((t) => t.id === e) ? e : "en", "metric"), n = {
+		let e = (this.hassNow?.locale?.language ?? this.hassNow?.language ?? "en").slice(0, 2), t = we(ve.some((t) => t.id === e) ? e : "en", "metric"), n = {
 			entity: "Place (zone, person or device tracker)",
 			name: "Name on the card",
 			mode: t.t("mode.label"),
@@ -5660,7 +5784,7 @@ var Z = class extends HTMLElement {
 			},
 			{
 				name: "language",
-				selector: r(F.map((e) => [e.id, e.name]))
+				selector: r(ve.map((e) => [e.id, e.name]))
 			},
 			{
 				name: "units",
@@ -5702,29 +5826,29 @@ var Z = class extends HTMLElement {
 		];
 	}
 };
-customElements.get("layers-weather-card-editor") || customElements.define("layers-weather-card-editor", Z);
+customElements.get("layers-weather-card-editor") || customElements.define("layers-weather-card-editor", ke);
 //#endregion
 //#region card/src/layers-weather-card.ts
-var Q = "0.1.4", De = [
+var Ae = "0.1.5", je = [
 	"en",
 	"de",
 	"fr",
 	"es",
 	"bg"
-], Oe = 18e5, ke = 3e5, Ae = (e) => `layers-weather-card:mode:${e.entity ?? "zone.home"}`, je = (e) => Math.round(e * 100) / 100, $ = (e) => e.replace(/[&<>"']/g, (e) => ({
+], Me = 18e5, Ne = 3e5, Q = (e) => `layers-weather-card:mode:${e.entity ?? "zone.home"}`, Pe = (e) => Math.round(e * 100) / 100, $ = (e) => e.replace(/[&<>"']/g, (e) => ({
 	"&": "&amp;",
 	"<": "&lt;",
 	">": "&gt;",
 	"\"": "&quot;",
 	"'": "&#39;"
-})[e]), Me = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), Ne = (e) => e.replace(/\s*\(.*\)\s*$/, ""), Pe = class extends HTMLElement {
+})[e]), Fe = (e, t) => e && e.charAt(0).toLocaleUpperCase(t) + e.slice(1), Ie = (e) => e.replace(/\s*\(.*\)\s*$/, ""), Le = class extends HTMLElement {
 	constructor() {
-		super(), X(this, "config", { type: "custom:layers-weather-card" }), X(this, "hassNow", void 0), X(this, "forecast", void 0), X(this, "fetchedFor", ""), X(this, "fetchedAt", 0), X(this, "loading", !1), X(this, "failed", !1), X(this, "mode", "everyone"), X(this, "timer", void 0), X(this, "drawn", ""), X(this, "root", void 0), this.root = this.attachShadow({ mode: "open" }), this.root.addEventListener("click", (e) => {
+		super(), Z(this, "config", { type: "custom:layers-weather-card" }), Z(this, "hassNow", void 0), Z(this, "forecast", void 0), Z(this, "fetchedFor", ""), Z(this, "fetchedAt", 0), Z(this, "loading", !1), Z(this, "failed", !1), Z(this, "mode", "everyone"), Z(this, "timer", void 0), Z(this, "drawn", ""), Z(this, "root", void 0), this.root = this.attachShadow({ mode: "open" }), this.root.addEventListener("click", (e) => {
 			let t = e.target.closest("[data-mode]");
 			if (t) {
 				this.mode = t.dataset.mode === "kids" ? "kids" : "everyone";
 				try {
-					localStorage.setItem(Ae(this.config), this.mode);
+					localStorage.setItem(Q(this.config), this.mode);
 				} catch {}
 				this.render();
 			}
@@ -5735,7 +5859,7 @@ var Q = "0.1.4", De = [
 		this.config = e;
 		let t = null;
 		try {
-			t = e.show_mode_switch === !1 ? null : localStorage.getItem(Ae(e));
+			t = e.show_mode_switch === !1 ? null : localStorage.getItem(Q(e));
 		} catch {
 			t = null;
 		}
@@ -5763,7 +5887,7 @@ var Q = "0.1.4", De = [
 		};
 	}
 	static async getConfigElement() {
-		return await Ve(), document.createElement("layers-weather-card-editor");
+		return await We(), document.createElement("layers-weather-card-editor");
 	}
 	static getStubConfig() {
 		return { entity: "zone.home" };
@@ -5775,15 +5899,15 @@ var Q = "0.1.4", De = [
 		if (typeof n != "number" || typeof r != "number") return null;
 		let i = this.config.name ?? e.config?.location_name ?? (typeof t.friendly_name == "string" ? t.friendly_name : "");
 		return {
-			lat: je(n),
-			lon: je(r),
+			lat: Pe(n),
+			lon: Pe(r),
 			name: i
 		};
 	}
 	settings() {
 		let e = this.hassNow, t = (this.config.language ?? e?.locale?.language ?? e?.language ?? "en").slice(0, 2).toLowerCase();
 		return {
-			lang: De.includes(t) ? t : "en",
+			lang: je.includes(t) ? t : "en",
 			units: this.config.units ?? (e?.config?.unit_system?.temperature === "°F" ? "imperial" : "metric"),
 			style: this.config.style === "women" ? "girl" : this.config.style === "men" ? "boy" : "neutral",
 			summer: this.config.summer ?? "skirt",
@@ -5796,7 +5920,7 @@ var Q = "0.1.4", De = [
 		let e = this.place();
 		if (!e || this.loading) return;
 		let t = `${e.lat},${e.lon}`, n = Date.now() - this.fetchedAt;
-		t === this.fetchedFor && n < (this.failed ? ke : Oe) || (this.loading = !0, B(e.lat, e.lon).then((e) => {
+		t === this.fetchedFor && n < (this.failed ? Ne : Me) || (this.loading = !0, V(e.lat, e.lon).then((e) => {
 			this.forecast = e, this.failed = !1;
 		}).catch(() => {
 			this.failed = !0;
@@ -5817,17 +5941,17 @@ var Q = "0.1.4", De = [
 		]);
 		if (!e && n === this.drawn) return;
 		this.drawn = n;
-		let r = xe(t.lang, t.units, t.style, this.mode === "kids", t.summer), i = this.place(), a = this.forecast, o = a ? fe(a.timezone, Date.now(), a.now) : null, s = a && o && i ? M(a.days, o, {
+		let r = we(t.lang, t.units, t.style, this.mode === "kids", t.summer), i = this.place(), a = this.forecast, o = a ? me(a.timezone, Date.now(), a.now) : null, s = a && o && i ? N(a.days, o, {
 			sensitivity: t.sensitivity,
 			latitude: i.lat,
 			forKids: this.mode === "kids",
 			allergies: t.allergies,
 			eyes: t.eyes,
 			dress: t.style === "girl" && t.summer === "dress"
-		}) : null, c = o && s ? me(o, s) : "today", l = s ? c === "today" ? s.today ?? s.tomorrow : s.tomorrow : null, u = !!this.hassNow?.themes?.darkMode, d;
-		d = i ? !l || !o ? `<p class="note">${$(r.t(this.failed ? "status.error" : "status.loading"))}</p>` : this.mode === "kids" ? Be(l, r) : ze(l, r) : `<p class="note">${$("Set a place: a zone, person or device tracker with a position (default: zone.home).")}</p>`;
-		let f = i ? Fe(i.name, c, o, r) : "", p = this.config.show_mode_switch === !1 ? "" : Ie(this.mode, r);
-		this.root.innerHTML = `<style>${K}</style>
+		}) : null, c = o && s ? he(o, s) : "today", l = s ? c === "today" ? s.today ?? s.tomorrow : s.tomorrow : null, u = !!this.hassNow?.themes?.darkMode, d;
+		d = i ? !l || !o ? `<p class="note">${$(r.t(this.failed ? "status.error" : "status.loading"))}</p>` : this.mode === "kids" ? Ue(l, r) : He(l, r) : `<p class="note">${$("Set a place: a zone, person or device tracker with a position (default: zone.home).")}</p>`;
+		let f = i ? Re(i.name, c, o, r) : "", p = this.config.show_mode_switch === !1 ? "" : ze(this.mode, r);
+		this.root.innerHTML = `<style>${q}</style>
       <ha-card class="lw${u ? " lw--dark" : ""}${this.mode === "kids" ? " lw--kids" : ""}">
         <div class="lw__top">${f}${p}</div>
         ${d}
@@ -5835,34 +5959,38 @@ var Q = "0.1.4", De = [
       </ha-card>`;
 	}
 };
-function Fe(e, t, n, r) {
+function Re(e, t, n, r) {
 	let i = n ? r.time(n.hour, n.minute) : "";
 	return `<div class="lw__place">
-      <span class="lw__logo">${G.logo()}</span>
+      <span class="lw__logo">${K.logo()}</span>
       <span><b>${$(e)}</b><small>${$(r.t(`day.${t}`))}${i ? ` · ${$(i)}` : ""}</small></span>
     </div>`;
 }
-function Ie(e, t) {
-	let n = (n) => `<button type="button" data-mode="${n}" aria-pressed="${e === n}">${$(Ne(t.t(`mode.${n}`)))}</button>`;
+function ze(e, t) {
+	let n = (n) => `<button type="button" data-mode="${n}" aria-pressed="${e === n}">${$(Ie(t.t(`mode.${n}`)))}</button>`;
 	return `<div class="lw__switch" role="group" aria-label="${$(t.t("mode.label"))}">${n("everyone")}${n("kids")}</div>`;
 }
-function Le(e, t) {
+function Be(e, t) {
 	return [...new Map(e.map((e) => [t.kind(e), e])).values()];
 }
-function Re(e, t) {
-	return `<li class="lw__tile"><span class="lw__box">${G.clothing(t.kind(e))}</span><span>${$(t.item(e))}</span></li>`;
+function Ve(e, t, n = null) {
+	let r = n ? `<small class="lw__reason">${$(n)}</small>` : "";
+	return `<li class="lw__tile"><span class="lw__box">${K.clothing(t.kind(e))}</span><span>${$(t.item(e))}${r}</span></li>`;
 }
-function ze(e, t) {
-	let n = e.views[0], r = n?.part ?? e.parts[0].part, i = Le((e.kids.find((e) => e.part === r)?.wear ?? []).filter((e) => e !== "socksEveryday"), t), a = e.chips.map((e) => `<li class="lw__chip">${G.ui(e.icon)}${$(t.msg(e.msg))}</li>`).join(""), o = e.strip.map((e) => `<li class="lw__part${e.past ? " lw__part--past" : ""}${e.part === r ? " lw__part--on" : ""}">
-        <span>${$(t.part(e.part))}</span>${G.weather(e.icon)}<b>${$(t.layers(e.layers))}</b><small>${$(t.temp(e.feels))}</small></li>`).join(""), s = n?.bag, c = s ? s.leaving ? L(s.bag, t) : Ce(s, t) : "", l = s ? Le(s.bag.map((e) => e.kind), t).map((e) => `<span class="lw__mini">${G.clothing(t.kind(e))}</span>`).join("") : "";
+function He(e, t) {
+	let n = e.views[0], r = n?.part ?? e.parts[0].part, i = Be((e.kids.find((e) => e.part === r)?.wear ?? []).filter((e) => e !== "socksEveryday"), t), a = (n?.cards ?? e.cards).flatMap((e) => e.items), o = (e) => {
+		let n = a.find((t) => t.kind === e && t.active && t.reason);
+		return n ? t.reason(n) : null;
+	}, s = e.chips.map((e) => `<li class="lw__chip">${K.ui(e.icon)}${$(t.msg(e.msg))}</li>`).join(""), c = e.strip.map((e) => `<li class="lw__part${e.past ? " lw__part--past" : ""}${e.part === r ? " lw__part--on" : ""}">
+        <span>${$(t.part(e.part))}</span>${K.weather(e.icon)}<b>${$(t.layers(e.layers))}</b><small>${$(t.temp(e.feels))}</small></li>`).join(""), l = n?.bag, u = l ? l.leaving ? Te(l.bag, t) : R(l, t) : "", d = l ? Be(l.bag.map((e) => e.kind), t).map((e) => `<span class="lw__mini">${K.clothing(t.kind(e))}</span>`).join("") : "";
 	return `<div class="lw__main">
       <section class="lw__lead">
         <h2 class="lw__headline">${$(t.msgs(e.headline))}</h2>
         <p class="lw__summary">${$(t.msgs(e.summary))}</p>
-        <ul class="lw__chips">${a}</ul>
+        <ul class="lw__chips">${s}</ul>
       </section>
       <section class="lw__outfit">
-        <ol class="lw__strip">${o}</ol>
+        <ol class="lw__strip">${c}</ol>
         <h3 class="lw__label">${$(t.msg({
 		key: "view.heading",
 		params: { when: {
@@ -5871,23 +5999,23 @@ function ze(e, t) {
 			all: !1
 		} }
 	}))}</h3>
-        <ul class="lw__tiles">${i.map((e) => Re(e, t)).join("")}</ul>
-        ${c ? `<p class="lw__bag"><span class="lw__bag-icon">${G.ui("backpack")}</span><span><b>${$(t.t("bring.title"))}:</b> ${$(c)}</span><span class="lw__bag-items">${l}</span></p>` : ""}
+        <ul class="lw__tiles">${i.map((e) => Ve(e, t, o(e))).join("")}</ul>
+        ${u ? `<p class="lw__bag"><span class="lw__bag-icon">${K.ui("backpack")}</span><span><b>${$(t.t("bring.title"))}:</b> ${$(u)}</span><span class="lw__bag-items">${d}</span></p>` : ""}
       </section>
     </div>`;
 }
-function Be(e, t) {
-	let n = e.kids[0], r = e.parts.find((e) => e.part === n.part)?.conditions ?? e.parts[0].conditions, i = Me(t.t(`word.${r.word}`), t.locale), a = Le(n.wear, t), o = Le(n.bag.leaving ? n.bag.bag.map((e) => e.kind) : n.bag.out, t);
+function Ue(e, t) {
+	let n = e.kids[0], r = e.parts.find((e) => e.part === n.part)?.conditions ?? e.parts[0].conditions, i = Fe(t.t(`word.${r.word}`), t.locale), a = Be(n.wear, t), o = Be(n.bag.leaving ? n.bag.bag.map((e) => e.kind) : n.bag.out, t);
 	return `<div class="lw__kids">
       <section class="lw__scene">
-        <span class="lw__scene-art">${G.weather(r.icon)}<span class="lw__face">${G.face(he(r.word))}</span></span>
+        <span class="lw__scene-art">${K.weather(r.icon)}<span class="lw__face">${K.face(_e(r.word))}</span></span>
         <span><span class="lw__word">${$(i)}</span><span class="lw__temp">${$(t.temp(r.tempAvg))}</span><small>${$(t.part(n.part))}</small></span>
       </section>
-      <ul class="lw__tiles lw__tiles--kids">${a.map((e) => Re(e, t)).join("")}</ul>
-      ${o.length ? `<h3 class="lw__label">${G.ui("backpack")} ${$(t.t("kids.bag"))}</h3><ul class="lw__tiles lw__tiles--bag">${o.map((e) => Re(e, t)).join("")}</ul>` : ""}
+      <ul class="lw__tiles lw__tiles--kids">${a.map((e) => Ve(e, t)).join("")}</ul>
+      ${o.length ? `<h3 class="lw__label">${K.ui("backpack")} ${$(t.t("kids.bag"))}</h3><ul class="lw__tiles lw__tiles--bag">${o.map((e) => Ve(e, t)).join("")}</ul>` : ""}
     </div>`;
 }
-async function Ve() {
+async function We() {
 	if (customElements.get("ha-form")) return;
 	let e = window;
 	try {
@@ -5897,14 +6025,14 @@ async function Ve() {
 		}))?.constructor.getConfigElement?.();
 	} catch {}
 }
-customElements.get("layers-weather-card") || customElements.define("layers-weather-card", Pe);
-var He = window;
-He.customCards = He.customCards ?? [], He.customCards.some((e) => e.type === "layers-weather-card") || He.customCards.push({
+customElements.get("layers-weather-card") || customElements.define("layers-weather-card", Le);
+var Ge = window;
+Ge.customCards = Ge.customCards ?? [], Ge.customCards.some((e) => e.type === "layers-weather-card") || Ge.customCards.push({
 	type: "layers-weather-card",
 	name: "Layers Weather",
 	description: "What to wear for the weather today: layers, shoes, hat, umbrella and what to take. For grown-ups and kids.",
 	preview: !0,
 	documentationURL: "https://github.com/eybox/layers-weather-card"
-}), console.info(`%c LAYERS-WEATHER-CARD %c ${Q} `, "background:#6031b0;color:#fff;border-radius:4px 0 0 4px", "background:#fcb679;color:#291d18;border-radius:0 4px 4px 0");
+}), console.info(`%c LAYERS-WEATHER-CARD %c ${Ae} `, "background:#6031b0;color:#fff;border-radius:4px 0 0 4px", "background:#fcb679;color:#291d18;border-radius:0 4px 4px 0");
 //#endregion
-export { Q as CARD_VERSION };
+export { Ae as CARD_VERSION };
