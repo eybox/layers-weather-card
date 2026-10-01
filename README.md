@@ -140,11 +140,11 @@ The file should end up as `config/www/layers-weather-card.js`.
    **Advanced mode**.
 2. Go to **Settings → Dashboards**, open the menu **⋮** (top right) and choose **Resources**.
 3. Press **+ Add resource** (bottom right) and fill in:
-   - **URL:** `/local/layers-weather-card.js?v=0.1.5`
+   - **URL:** `/local/layers-weather-card.js?v=0.2.0`
    - **Resource type:** **JavaScript module**
 4. Press **Create**, then reload the page (**Ctrl + F5** / **Cmd + Shift + R**).
 
-The `?v=0.1.5` at the end is the version. When you update the card by hand later, change it to the new version
+The `?v=0.2.0` at the end is the version. When you update the card by hand later, change it to the new version
 number, so every screen loads the new file instead of an old saved copy.
 
 ### If your dashboards are in YAML mode
@@ -170,7 +170,7 @@ In YAML mode, Home Assistant ignores the **Resources** page, so the card has to 
        - url: /hacsfiles/layers-weather-card/layers-weather-card.js
          type: module
        # Or installed by hand (use this line instead of the one above):
-       # - url: /local/layers-weather-card.js?v=0.1.5
+       # - url: /local/layers-weather-card.js?v=0.2.0
        #   type: module
    ```
 
@@ -202,19 +202,25 @@ Everything is optional. The card's visual editor has all of these; in YAML, add 
 | Setting | What it does | Values | Default |
 |---|---|---|---|
 | `entity` | Where the weather is for. | A `zone`, `person` or `device_tracker` with a position | `zone.home` |
-| `name` | The place's name at the top of the card. | Any text | Your home's name in Home Assistant |
+| `name` | The place's name at the top of the card. | Any text | Its own name (your home's name in Home Assistant for `zone.home`) |
 | `mode` | The view the card starts in. | `everyone` (grown-ups), `kids` | `everyone` |
 | `show_mode_switch` | Show the grown-ups / kids switch on the card. | `true`, `false` | `true` |
 | `language` | The card's language. | `en`, `de`, `fr`, `es`, `bg` | Home Assistant's language (English if it isn't one of these) |
 | `units` | °C and km/h, or °F and mph. | `metric`, `imperial` | Home Assistant's unit system |
 | `sensitivity` | How warm the advice is. | `cold` (dresses you warmer), `normal`, `hot` (lighter) | `normal` |
+| `commute` | How you get around. | `walk`, `bike` (3° warmer and always windproof), `car` (car or transit: 3° lighter) | `walk` |
+| `child_age` | The kids' view: the children's age group. 3–5-year-olds are dressed a little warmer. | `young` (3–5), `school` (6–12) | `school` |
 | `style` | The clothes pictures. Kids see girl / boy. | `women`, `men` | Neutral pictures |
 | `summer` | With `style: women`: what to show on warm days. `dress` puts on a dress only on properly hot days (25 °C / 77 °F and up); other warm days stay top and skirt. | `skirt` (top & skirt), `shorts` (top & shorts), `dress` | `skirt` |
 | `eyes` | Eye colour: lighter eyes get sunglasses sooner. | `brown`, `hazel`, `green`, `blue` | `brown` |
 | `allergies` | Tissues on high-pollen days, and a mask sooner when the air is poor. | `true`, `false` | `false` |
 
 The switch remembers the last view on each screen, for each place: a wall tablet left on **Kids** stays on Kids,
-while your phone stays on **Grown-ups**.
+while your phone stays on **Grown-ups**. If you change `mode` in the settings later, the card starts in the new
+`mode` again.
+
+A setting the card can't use (a typo such as `sensitivity: warm`) shows Home Assistant's red error card, naming the
+setting and the values it accepts.
 
 ## Examples
 
@@ -304,6 +310,12 @@ Home Assistant hasn't loaded the card's file.
 The card can't find a position. Set your home's location in **Settings → System → General**, or give the card an
 `entity` that has one (a zone, or a person whose phone reports a location).
 
+### "… has no position right now"
+
+The card's `entity` (say, a person) doesn't report a location at the moment, for example when their phone's
+location is off. The card says so rather than showing the weather at home. Pick a zone instead, or check the
+person's location in Home Assistant.
+
 ### "Could not get the weather. Check your connection."
 
 The screen showing the card couldn't reach Open-Meteo. Check that this device is online and allowed to reach
@@ -323,7 +335,7 @@ the settings in YAML (see [Settings](#settings)), and please [report it](https:/
 ### Something else
 
 [Open an issue](https://github.com/eybox/layers-weather-card/issues) with your Home Assistant version, the card
-version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.1.5`), the
+version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.2.0`), the
 device and browser showing it, and a screenshot.
 
 ## Remove
