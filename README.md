@@ -19,9 +19,9 @@ It plans the day in three parts (morning, afternoon, evening) and tells you:
 - **what to take with you**: the umbrella for the afternoon rain, sunglasses for later, water on a hot day;
 - **why**, in a few plain words: "Cold at first, warm later. Staying dry."
 
-From 19:30 it shows tomorrow, so clothes can be laid out the evening before. It is the Home Assistant version of
-the [Layers Weather web app](https://weather.ecortex.eu), with the same rules and words, in English, German,
-French, Spanish and Bulgarian.
+From 19:30 tomorrow is there too, so clothes can be laid out the evening before. It is the Home Assistant version
+of the [Layers Weather web app](https://weather.ecortex.eu)'s TV and wall screen: the same screen, the same rules
+and words, in English, German, French, Spanish and Bulgarian.
 
 ## Why it exists
 
@@ -47,15 +47,18 @@ elsewhere), not for deserts, the tropics or polar regions.
 
 ## What you'll see
 
-One card, two views, with a switch at the top:
+One card, two views, with a switch at the top, and a big clock:
 
-- **Grown-ups** (the default): the day in a few words, what to wear now and what to take with you, then the
-  morning, afternoon and evening and the weather at a glance. Clothes first, numbers second.
-- **Kids**: one big weather word with a face, and big pictures of what to put on (and what goes in the bag).
+- **Grown-ups** (the default): the day in a few words, then what to wear now, as big pictures, with the layers
+  and what goes into the backpack. Beside it, the rest of the day: each later part with its layers and what comes
+  out of the backpack or goes in. From 19:30 tomorrow takes that place; from 22:00 the card shows tomorrow.
+- **Kids**: one big weather word with a face, and big pictures of what to put on (and what goes in the bag). From
+  19:30 it shows tomorrow morning's clothes.
 
-It follows your Home Assistant theme, light or dark, takes the colour of the weather (warm for sun, grey for
-cloud, blue for cold), and fits a phone as well as a wall tablet: on a full-screen tablet the pictures and words
-grow so they can be read from across the hall.
+It looks like the app's TV screen, in the colour of the weather (warm for sun, grey for cloud, blue for cold). It
+follows your Home Assistant theme, light or dark, or, if you like, the sun: light by day, dark after sunset, as on
+a TV (see `appearance`). On a wall tablet it is the TV screen; in a narrow dashboard column or on a phone the same
+pieces stack in one column.
 
 <table>
   <tr>
@@ -142,11 +145,11 @@ The file should end up as `config/www/layers-weather-card.js`.
    **Advanced mode**.
 2. Go to **Settings → Dashboards**, open the menu **⋮** (top right) and choose **Resources**.
 3. Press **+ Add resource** (bottom right) and fill in:
-   - **URL:** `/local/layers-weather-card.js?v=0.3.0`
+   - **URL:** `/local/layers-weather-card.js?v=0.4.0`
    - **Resource type:** **JavaScript module**
 4. Press **Create**, then reload the page (**Ctrl + F5** / **Cmd + Shift + R**).
 
-The `?v=0.3.0` at the end is the version. When you update the card by hand later, change it to the new version
+The `?v=0.4.0` at the end is the version. When you update the card by hand later, change it to the new version
 number, so every screen loads the new file instead of an old saved copy.
 
 ### If your dashboards are in YAML mode
@@ -172,7 +175,7 @@ In YAML mode, Home Assistant ignores the **Resources** page, so the card has to 
        - url: /hacsfiles/layers-weather-card/layers-weather-card.js
          type: module
        # Or installed by hand (use this line instead of the one above):
-       # - url: /local/layers-weather-card.js?v=0.3.0
+       # - url: /local/layers-weather-card.js?v=0.4.0
        #   type: module
    ```
 
@@ -216,6 +219,7 @@ Everything is optional. The card's visual editor has all of these; in YAML, add 
 | `summer` | With `style: women`: what to show on warm days. `dress` puts on a dress only on properly hot days (25 °C / 77 °F and up); other warm days stay top and skirt. | `skirt` (top & skirt), `shorts` (top & shorts), `dress` | `skirt` |
 | `eyes` | Eye colour: lighter eyes get sunglasses sooner. | `brown`, `hazel`, `green`, `blue` | `brown` |
 | `allergies` | Tissues on high-pollen days, and a mask sooner when the air is poor. | `true`, `false` | `false` |
+| `appearance` | Light or dark. | `theme` (like your dashboard), `sun` (light by day, dark after sunset at the place), `light`, `dark` | `theme` |
 
 The switch remembers the last view on each screen, for each place: a wall tablet left on **Kids** stays on Kids,
 while your phone stays on **Grown-ups**. If you change `mode` in the settings later, the card starts in the new
@@ -280,7 +284,7 @@ entity: zone.grandma
 - **Keep the screen on:** a kiosk browser such as *Fully Kiosk Browser* (Android), or the tablet's own settings,
   can keep the screen awake and reload the page if it ever loses the connection.
 - **Leave it running:** the card gets a new forecast every 30 minutes and keeps the time at your place every
-  minute, so it can stay on for days. At 19:30 it turns to tomorrow by itself.
+  minute, so it can stay on for days. At 19:30 tomorrow appears by itself, and at 22:00 it takes over.
 
 ## Update
 
@@ -337,7 +341,7 @@ the settings in YAML (see [Settings](#settings)), and please [report it](https:/
 ### Something else
 
 [Open an issue](https://github.com/eybox/layers-weather-card/issues) with your Home Assistant version, the card
-version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.3.0`), the
+version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.4.0`), the
 device and browser showing it, and a screenshot.
 
 ## Remove
