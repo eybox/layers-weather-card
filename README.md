@@ -6,7 +6,7 @@
 **Know what to wear before you walk out the door.** A dashboard card that turns the weather forecast into clothes:
 how many layers, which shoes, hat or not, umbrella or not, and what to put in the bag, for grown-ups and for kids.
 
-![The card on a wall tablet: the grown-ups view, with the day in a few words, the morning, afternoon and evening, and what to wear this morning](docs/wall-grown-ups.png)
+![The card on a wall tablet: the grown-ups view, with the day in a few words, what to wear this morning, and the morning, afternoon and evening](docs/wall-grown-ups.png)
 
 ## What it is
 
@@ -49,11 +49,13 @@ elsewhere), not for deserts, the tropics or polar regions.
 
 One card, two views, with a switch at the top:
 
-- **Grown-ups** (the default): the day in a few words, the weather at a glance, the morning, afternoon and evening,
-  what to wear now, and what to take with you.
+- **Grown-ups** (the default): the day in a few words, what to wear now and what to take with you, then the
+  morning, afternoon and evening and the weather at a glance. Clothes first, numbers second.
 - **Kids**: one big weather word with a face, and big pictures of what to put on (and what goes in the bag).
 
-It follows your Home Assistant theme, light or dark, and fits a phone as well as a wall tablet.
+It follows your Home Assistant theme, light or dark, takes the colour of the weather (warm for sun, grey for
+cloud, blue for cold), and fits a phone as well as a wall tablet: on a full-screen tablet the pictures and words
+grow so they can be read from across the hall.
 
 <table>
   <tr>
@@ -140,11 +142,11 @@ The file should end up as `config/www/layers-weather-card.js`.
    **Advanced mode**.
 2. Go to **Settings → Dashboards**, open the menu **⋮** (top right) and choose **Resources**.
 3. Press **+ Add resource** (bottom right) and fill in:
-   - **URL:** `/local/layers-weather-card.js?v=0.2.0`
+   - **URL:** `/local/layers-weather-card.js?v=0.3.0`
    - **Resource type:** **JavaScript module**
 4. Press **Create**, then reload the page (**Ctrl + F5** / **Cmd + Shift + R**).
 
-The `?v=0.2.0` at the end is the version. When you update the card by hand later, change it to the new version
+The `?v=0.3.0` at the end is the version. When you update the card by hand later, change it to the new version
 number, so every screen loads the new file instead of an old saved copy.
 
 ### If your dashboards are in YAML mode
@@ -170,7 +172,7 @@ In YAML mode, Home Assistant ignores the **Resources** page, so the card has to 
        - url: /hacsfiles/layers-weather-card/layers-weather-card.js
          type: module
        # Or installed by hand (use this line instead of the one above):
-       # - url: /local/layers-weather-card.js?v=0.2.0
+       # - url: /local/layers-weather-card.js?v=0.3.0
        #   type: module
    ```
 
@@ -335,7 +337,7 @@ the settings in YAML (see [Settings](#settings)), and please [report it](https:/
 ### Something else
 
 [Open an issue](https://github.com/eybox/layers-weather-card/issues) with your Home Assistant version, the card
-version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.2.0`), the
+version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.3.0`), the
 device and browser showing it, and a screenshot.
 
 ## Remove
