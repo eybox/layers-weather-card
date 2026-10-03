@@ -146,11 +146,11 @@ The file should end up as `config/www/layers-weather-card.js`.
    **Advanced mode**.
 2. Go to **Settings → Dashboards**, open the menu **⋮** (top right) and choose **Resources**.
 3. Press **+ Add resource** (bottom right) and fill in:
-   - **URL:** `/local/layers-weather-card.js?v=0.5.2`
+   - **URL:** `/local/layers-weather-card.js?v=0.5.3`
    - **Resource type:** **JavaScript module**
 4. Press **Create**, then reload the page (**Ctrl + F5** / **Cmd + Shift + R**).
 
-The `?v=0.5.2` at the end is the version. When you update the card by hand later, change it to the new version
+The `?v=0.5.3` at the end is the version. When you update the card by hand later, change it to the new version
 number, so every screen loads the new file instead of an old saved copy.
 
 ### If your dashboards are in YAML mode
@@ -176,7 +176,7 @@ In YAML mode, Home Assistant ignores the **Resources** page, so the card has to 
        - url: /hacsfiles/layers-weather-card/layers-weather-card.js
          type: module
        # Or installed by hand (use this line instead of the one above):
-       # - url: /local/layers-weather-card.js?v=0.5.2
+       # - url: /local/layers-weather-card.js?v=0.5.3
        #   type: module
    ```
 
@@ -342,7 +342,7 @@ the settings in YAML (see [Settings](#settings)), and please [report it](https:/
 ### Something else
 
 [Open an issue](https://github.com/eybox/layers-weather-card/issues) with your Home Assistant version, the card
-version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.5.2`), the
+version (**HACS → Layers Weather**, or the browser console, which shows `LAYERS-WEATHER-CARD 0.5.3`), the
 device and browser showing it, and a screenshot.
 
 ## Remove
